@@ -14,6 +14,6 @@ char menuFluxo(void);
 
 Flu* cadastrarGasto(void);
 
-void telaFluxo(const Flu*);
+void telaFluxo();
 void pesquisarFluxo(void);
 void cadastroGasto(void);

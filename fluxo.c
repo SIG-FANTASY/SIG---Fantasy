@@ -16,9 +16,11 @@ void moduloFluxo(void)
 		escolha = menuFluxo();
 		switch(escolha) {
 			case '1': 	cadastroGasto();
-						break;
-      case '2': 	pesquisarFluxo();
-						break;
+				break;
+			case '2': telaFluxo();
+				break;
+      		case '3': pesquisarFluxo();
+      			break;
 		} 		
 	} while (escolha != '0'); 
 }
@@ -47,7 +49,8 @@ char menuFluxo(void)
 	printf("||                         __________________________________                       ||\n");
 	printf("||                        |                                  |                      ||\n");
 	printf("||                        |  1. Cadastrar Gastos             |                      ||\n");
-  printf("||                        |  2. Pesquisar fluxo              |                      ||\n");
+	printf("||                        |  2. Exibir Gastos                |                      ||\n");
+  	printf("||                        |  3. Pesquisar fluxo              |                      ||\n");
 	printf("||                        |  0. Voltar                       |                      ||\n");
 	printf("||                        |  'Digite a opcao desejada:'");
 	int valid;
@@ -68,9 +71,9 @@ char menuFluxo(void)
 	return escolha;
 }
 
-void telaFluxo(const Flu* flu)
+void telaFluxo()
 {
-  char escolha;
+  	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -88,11 +91,19 @@ void telaFluxo(const Flu* flu)
 	printf("||                      =========================================                   ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||      __________________________________________________________________          ||\n");
-	printf("||     |                                                                  |         ||\n");
-	printf("||     |  Motivo: %s | Responsável: %s [%d/%d/%d]............ ....... %2.f  |         ||\n", flu->motivo, flu->responsavel, flu->dia, flu->mes, flu->ano, flu->valor);
-	printf("||     |  Motivo: %s | Responsável: %s [%d/%d/%d]............ ....... %2.f  |         ||\n", flu->motivo, flu->responsavel, flu->dia, flu->mes, flu->ano, flu->valor);
-	printf("||     |  Motivo: %s | Responsável: %s [%d/%d/%d]............ ....... %2.f  |         ||\n", flu->motivo, flu->responsavel, flu->dia, flu->mes, flu->ano, flu->valor);
-	printf("||     |  Motivo: %s | Responsável: %s [%d/%d/%d]............ ....... %2.f  |         ||\n", flu->motivo, flu->responsavel, flu->dia, flu->mes, flu->ano, flu->valor);
+    FILE *fp;
+    char letra;
+    fp = fopen("fluxo.txt", "rt");
+    if (fp == NULL){
+      printf("Erro! O sistema não conseguiu indentificar o arquivo!\n");
+      exit(1);
+    }
+    letra = fgetc(fp);
+    while (letra != EOF) {
+      printf("%c", letra);
+      letra = fgetc(fp);
+    }
+    fclose(fp);
 	printf("||     |                                                                  |         ||\n");
 	printf("||     |                                                                  |         ||\n");
 	printf("||     |                                                                  |         ||\n");
@@ -198,7 +209,7 @@ Flu* cadastrarGasto(void)
     int esc= validarEscolhas(escolha);
     if (esc==0){
       if (escolha=='1'){
-        telaFluxo(flu);
+        telaFluxo();
       }else if (escolha=='2'){
         menuFluxo();
       }else{
