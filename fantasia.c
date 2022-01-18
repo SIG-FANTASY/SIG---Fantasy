@@ -51,11 +51,11 @@ char menuFantasia(void)
 	printf("||                        |  0. Voltar                       |                      ||\n");
 	printf("||                        |  'Digite a opcao desejada:'");
 	int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    valid= validarEscolhas(escolha);
-  }while(valid==1);
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    valid= validarEscolhas(escolha);
+	}while(valid==1);
 	printf("||                        |__________________________________|                      ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
@@ -70,7 +70,7 @@ char menuFantasia(void)
 
 void telaFantasia(const Fan* fan)
 {
-  char escolha;
+  	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -94,7 +94,7 @@ void telaFantasia(const Fan* fan)
 	printf("|| | QUANTIDADE  %s                      |                                          ||\n", fan->quantidade);
 	printf("|| | TAMANHO  %s                         |                                          ||\n", fan->tamanho);
 	printf("|| | PRECO  %f                           |                                          ||\n", fan->preco);
-  printf("|| |                1-EDITAR  2-EXCLUIR  |                                         ||\n");
+  	printf("|| |                1-EDITAR  2-EXCLUIR  |                                         ||\n");
 	printf("|| |_____________________________________|                                          ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
@@ -104,25 +104,25 @@ void telaFantasia(const Fan* fan)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-  printf("3-voltar");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        editarFantasia();
-      }else if (escolha=='2'){
-        excluirFantasia();
-      }else if (escolha=='3'){
-        menuFantasia();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
-	sleep(5);
+	printf("3-voltar");
+	int valid;
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        editarFantasia();
+	      }else if (escolha=='2'){
+	        excluirFantasia();
+	      }else if (escolha=='3'){
+	        menuFantasia();
+	      }else{
+	        valid=1;
+	      }
+	    }
+	}while(valid==1);
+		sleep(5);
 }
 
 void cadastroFan(void){
@@ -133,10 +133,17 @@ void cadastroFan(void){
 
 Fan* cadastrarFantasia(void)
 {
-  char escolha;
-	Fan *fan;
-	fan = (Fan*) malloc(sizeof(Fan));
+	char escolha;
+		Fan *fan;
+		fan = (Fan*) malloc(sizeof(Fan));
 
+	FILE* fp;
+	fp = fopen("fantasia.txt","at");
+	if (fp == NULL){
+	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
+	    exit(1);
+	}
+  
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -156,27 +163,32 @@ Fan* cadastrarFantasia(void)
 	printf("||            ________________________________________________________              ||\n");
 	printf("||           |                                                        |             ||\n");
 	printf("||           |  Cód.Fantasia:");
-  do{
-    scanf("%[A-Z a-z 0-9]", fan->cod);
-	  getchar();
-  }while(validarNumeros(fan->cod,tamanhoString(fan->cod))==1);
-	printf("||           |  Nome:");
-  do{
-    scanf("%[A-Z a-z]", fan->nome);
-	  getchar();
-  }while(validarLetras(fan->nome,tamanhoString(fan->nome))==1);
-	printf("||           |  Quantidade:");
-  do{
-    scanf("%[A-Z a-z 0-9]", fan->quantidade);
-	  getchar();
-  }while(validarNumeros(fan->quantidade,tamanhoString(fan->quantidade))==1);
-	printf("||           |  Tamanho:");
-  do{
-    scanf("%[A-Z a-z]", fan->tamanho);
-	  getchar();
-  }while(validarLetras(fan->tamanho,tamanhoString(fan->tamanho))==1);
+	do{
+	    scanf("%[A-Z a-z 0-9]", fan->cod);
+	    fprintf(fp,"Cod: %s\n", fan->cod);
+		  getchar();
+	}while(validarNumeros(fan->cod,tamanhoString(fan->cod))==1);
+		printf("||           |  Nome:");
+	do{
+	    scanf("%[A-Z a-z]", fan->nome);
+	    fprintf(fp,"Nome: %s\n", fan->nome);
+		  getchar();
+	}while(validarLetras(fan->nome,tamanhoString(fan->nome))==1);
+		printf("||           |  Quantidade:");
+	do{
+		scanf("%[A-Z a-z 0-9]", fan->quantidade);
+	    fprintf(fp,"Quantidade: %s\n", fan->quantidade);
+		  getchar();
+	}while(validarNumeros(fan->quantidade,tamanhoString(fan->quantidade))==1);
+		printf("||           |  Tamanho:");
+	do{
+	    scanf("%[A-Z a-z]", fan->tamanho);
+	    fprintf(fp,"Tamanho: %s\n", fan->tamanho);
+		  getchar();
+	}while(validarLetras(fan->tamanho,tamanhoString(fan->tamanho))==1);
 	printf("||           |  Preco:(use ponto para separar o centavos Ex: 00.00)");
 	scanf("%f", &fan->preco);
+  	fprintf(fp,"Preço: %f \n\n\n", fan->preco);
 	getchar();
 	printf("||           |________________________________________________________|             ||\n");
 	printf("||                                                                                  ||\n");
@@ -187,27 +199,28 @@ Fan* cadastrarFantasia(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        telaFantasia(fan);
-      }else if (escolha=='2'){
-        menuFantasia();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
-	return fan;
+	fclose(fp);
+	int valid;
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        telaFantasia(fan);
+	      }else if (escolha=='2'){
+	        menuFantasia();
+	      }else{
+	        valid=1;
+	      }
+	    }
+	  }while(valid==1);
+		return fan;
 }
 
 void editarFantasia(void)
 {
-  char escolha;
+	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -239,26 +252,26 @@ void editarFantasia(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        // ainda será organizado
-      }else if (escolha=='2'){
-        menuFantasia();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
+	int valid;
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        // ainda será organizado
+	      }else if (escolha=='2'){
+	        menuFantasia();
+	      }else{
+	        valid=1;
+	      }
+	    }
+	  }while(valid==1);
 }
 
 void pesquisarFantasia(void)
 {
-  char escolha;
+ 	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -288,27 +301,27 @@ void pesquisarFantasia(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        // ainda será organizado
-      }else if (escolha=='2'){
-        menuFantasia();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
+	int valid;
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        // ainda será organizado
+	      }else if (escolha=='2'){
+	        menuFantasia();
+	      }else{
+	        valid=1;
+	      }
+	    }
+	  }while(valid==1);
 }
 
 
 void excluirFantasia(void)
 {
-  char escolha;
+  	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -341,19 +354,19 @@ void excluirFantasia(void)
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
     int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        // ainda será organizado
-      }else if (escolha=='2'){
-        // ainda será organizado
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
+	do{
+	    scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        // ainda será organizado
+	      }else if (escolha=='2'){
+	        // ainda será organizado
+	      }else{
+	        valid=1;
+	      }
+	    }
+	  }while(valid==1);
 }
 
