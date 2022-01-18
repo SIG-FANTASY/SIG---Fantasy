@@ -133,9 +133,16 @@ void cadastroVenda(void){
 
 Ven* cadastrarVenda(void)
 {
-  char escolha;
-  Ven *ven;
-  ven = (Ven*) malloc(sizeof(Ven));
+	char escolha;
+	Ven *ven;
+	ven = (Ven*) malloc(sizeof(Ven));
+
+	FILE* fp;
+	fp = fopen("venda.txt","at");
+	if (fp == NULL){
+	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
+	    exit(1);
+	}
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -157,20 +164,24 @@ Ven* cadastrarVenda(void)
 	printf("||           |  Cód. Produto:");
   do{
     scanf("%[A-Z a-z 0-9]", ven->cod);
+    fprintf(fp,"Codigo: %s\n", ven->cod);
   	getchar();
   }while(validarNumeros(ven->cod,tamanhoString(ven->cod))==1);
 	printf("||           |  Cód. Cliente:");
   do{
     scanf("%[A-Z a-z 0-9]", ven->cliente);
+    fprintf(fp,"Cliente: %s\n", ven->cliente);
   	getchar();
   }while(validarNumeros(ven->cliente,tamanhoString(ven->cliente))==1);
 	printf("||           |  Data (DD MM AA):");
   do{
     scanf("%d %d %d", &ven->dia, &ven->mes, &ven->ano);
+    fprintf(fp,"Data: %d/%d/%d\n", ven->dia, ven->mes, ven->ano);
   	getchar();
   }while(validarData(ven->dia,ven->mes,ven->ano)==1);
 	printf("||           |  Aluguel (dias):(use ponto para separar os centavos Ex: 00.00)");
   	scanf("%d", &ven->aluguel);
+  	fprintf(fp,"Aluguel: %d\n\n\n", ven->aluguel);
   	getchar();
 	//printf("||           |  Total:[aluguel*valor]                                 |             ||\n");
 	printf("||           |________________________________________________________|             ||\n");
@@ -182,6 +193,7 @@ Ven* cadastrarVenda(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
+	fclose(fp);
   int valid;
   do{
     scanf("%c", &escolha);
