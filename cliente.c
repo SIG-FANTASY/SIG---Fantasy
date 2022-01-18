@@ -15,9 +15,11 @@
 			escolha = menuCliente();
 			switch(escolha) {
 				case '1': 	cadastroCli();
-							break;
-				case '2':   pesquisarCliente();
-							break;
+				  break;
+				case '2':   telaCliente();
+				  break;
+        case '3': pesquisarCliente();
+          break;
 			} 		
 		} while (escolha != '0');
 	}
@@ -46,7 +48,8 @@
 		printf("||                         __________________________________                       ||\n");
 		printf("||                        |                                  |                      ||\n");
 		printf("||                        |  1. Cadastrar Clientes           |                      ||\n");
-		printf("||                        |  2. Pesquisar Cliente            |                      ||\n");
+		printf("||                        |  2. Exibir Cliente               |                      ||\n");
+		printf("||                        |  3. Pesquisar Cliente            |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
 		printf("||                        |  Digite a opcao desejada:");
 		int valid;
@@ -67,9 +70,9 @@
 		return escolha;
 	}
 
-	void telaCliente(const Cli* cli)
+	void telaCliente(void)
 	{
-    	char escolha;
+    char escolha;
 		system("clear||cls");
 		printf("______________________________________________________________________________________\n");
 		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -88,12 +91,20 @@
 		printf("||                                                                                  ||\n");
 		printf("||  _____________________________________                                           ||\n");
 		printf("|| |                                     |                                          ||\n");
-		printf("|| | NOME  %s                            |                                     ||\n", cli->nome);
-		printf("|| | IDADE  %s                           |                                     ||\n", cli->idade);
-		printf("|| | EMAIL  %s                           |                                     ||\n", cli->email);
-		printf("|| | TELEFONE  %s                        |                                     ||\n", cli->telefone);
-		printf("|| |                1-EDITAR  2-EXCLUIR  |                                         ||\n");
-    	printf("|| |_____________________________________|                                          ||\n");
+    FILE *fp;
+    char letra;
+    fp = fopen("cliente.txt", "rt");
+    if (fp == NULL){
+      printf("Erro na leitura do arquivo\n!");
+      exit(1);
+    }
+    letra = fgetc(fp);
+    while (letra != EOF) {
+      printf("%c", letra);
+      letra = fgetc(fp);
+    }
+    fclose(fp);
+    printf("|| |_____________________________________|                                          ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
@@ -198,7 +209,7 @@
 	      int esc= validarEscolhas(escolha);
 	      if (esc==0){
 	        if (escolha=='1'){
-	          telaCliente(cli);
+	          telaCliente();
 	        }else if (escolha=='2'){
 	          menuCliente();
 	        }else{

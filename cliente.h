@@ -12,7 +12,7 @@ char menuCliente(void);
 
 Cli* cadastrarCliente(void);
 
-void telaCliente(const Cli*);
+void telaCliente(void);
 void cadastroCli(void);
 void editarCliente(void);
 void pesquisarCliente(void);
