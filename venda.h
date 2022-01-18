@@ -14,7 +14,7 @@ char menuVenda(void);
 
 Ven* cadastrarVenda(void);
 
-void telaVenda(const Ven*);
+void telaVenda();
 void cadastroVenda(void);
 void editarVenda(void);
 void excluirVenda(void);

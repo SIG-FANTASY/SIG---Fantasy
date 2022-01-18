@@ -16,10 +16,12 @@ void moduloVenda(void)
 	do {
 		escolha = menuVenda();
 		switch(escolha) {
-			case '1': 	cadastroVenda();
-						break;
-			case '2': 	pesquisarVendas();
-						break;
+			case '1': cadastroVenda();
+				break;
+			case '2': telaVenda();
+				break;
+			case '3': pesquisarVendas();
+				break;
 		} 		
 	} while (escolha != '0');  
 }
@@ -47,7 +49,8 @@ char menuVenda(void)
 	printf("||                         __________________________________                       ||\n");
 	printf("||                        |                                  |                      ||\n");
 	printf("||                        |  1. Cadastrar Vendas             |                      ||\n");
-	printf("||                        |  2. Pesquisar Vendas             |                      ||\n");
+	printf("||                        |  2. Exibir Vendas                |                      ||\n");
+	printf("||                        |  3. Pesquisar Vendas             |                      ||\n");
 	printf("||                        |  0. Voltar                       |                      ||\n");
 	printf("||                        |  'Digite a opcao desejada:'");
 	int valid;
@@ -68,7 +71,7 @@ char menuVenda(void)
 	return escolha;
 }
 
-void telaVenda(const Ven* ven)
+void telaVenda()
 {
   char escolha;
 	system("clear||cls");
@@ -87,15 +90,23 @@ void telaVenda(const Ven* ven)
 	printf("||                      ====              Vendas             ====                   ||\n");
 	printf("||                      =========================================                   ||\n");
 	printf("||                                                                                  ||\n");
-	printf("||  _____________________________________                                            ||\n");
-	printf("|| |                                     |                                         ||\n");
-	printf("|| | PRODUTO  %s                         |                                         ||\n", ven->cod);
-	printf("|| | CLIENTE  %s                         |                                        ||\n", ven->cliente);
-	printf("|| | DATA     %d/%d/%d                   |                                         ||\n", ven->dia, ven->mes, ven->ano);
-	printf("|| | ALUGUEL  %d                         |                                         ||\n", ven->aluguel);
-	printf("|| | TOTAL                               |                                         ||\n");
-  printf("|| |                1-EDITAR  2-EXCLUIR  |                                         ||\n");
-	printf("|| |_____________________________________|                                         ||\n");
+	printf("||  _____________________________________                                           ||\n");
+	printf("|| |                                     |                                          ||\n");
+	    FILE *fp;
+    char letra;
+    fp = fopen("venda.txt", "rt");
+    if (fp == NULL){
+      printf("Erro! O sistema não conseguiu indentificar o arquivo!\n");
+      exit(1);
+    }
+    letra = fgetc(fp);
+    while (letra != EOF) {
+      printf("%c", letra);
+      letra = fgetc(fp);
+    }
+    fclose(fp);
+    printf("|| |                1-EDITAR  2-EXCLUIR  |                                          ||\n");
+	printf("|| |_____________________________________|                                          ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
@@ -201,7 +212,7 @@ Ven* cadastrarVenda(void)
     int esc= validarEscolhas(escolha);
     if (esc==0){
       if (escolha=='1'){
-        telaVenda(ven);
+        telaVenda();
       }else if (escolha=='2'){
         menuVenda();
       }else{
