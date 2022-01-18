@@ -133,6 +133,14 @@ Flu* cadastrarGasto(void)
   char escolha;
 	Flu *flu;
 	flu = (Flu*) malloc(sizeof(Flu));
+
+  FILE* fp;
+	fp = fopen("fantasia.txt","at");
+	if (fp == NULL){
+	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
+	    exit(1);
+	}
+
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -152,23 +160,26 @@ Flu* cadastrarGasto(void)
 	printf("||            ________________________________________________________              ||\n");
 	printf("||           |                                                        |             ||\n");
 	printf("||           |  Motivo:");
-  do{
-    scanf("%[A-Z a-z 0-9]", flu->motivo);
-	  getchar();
-  }while(validarLetras(flu->motivo,tamanhoString(flu->motivo))==1);
-	printf("||           |  Data (DD MM AA):");
-  do{
-    scanf("%d %d %d", &flu->dia, &flu->mes, &flu->ano);
-	  getchar();
-  }while(validarData(flu->dia, flu->mes, flu->ano)==1);
-	printf("||           |  Valor:");
-	scanf("%f", &flu->valor);
-	getchar();
-	printf("||           |  Responsável:");
-  do{
-    scanf("%[A-Z a-z 0-9]", flu->responsavel);
-	  getchar();
-  }while(validarLetras(flu->responsavel,tamanhoString(flu->responsavel))==1);
+	do{
+	    scanf("%[A-Z a-z 0-9]", flu->motivo);
+	    fprintf(fp,"Motivo: %s\n", flu->motivo);
+		getchar();
+	}while(validarLetras(flu->motivo,tamanhoString(flu->motivo))==1);
+		printf("||           |  Data (DD MM AA):");
+	do{
+	    scanf("%d %d %d", &flu->dia, &flu->mes, &flu->ano);
+	    fprintf(fp,"Data: %d/%d/%d\n", flu->dia, flu->mes, flu->ano);
+		getchar();
+	}while(validarData(flu->dia, flu->mes, flu->ano)==1);
+		printf("||           |  Valor:");
+		scanf("%f", &flu->valor);
+		fprintf(fp,"Valor: %f\n", flu->valor);
+		getchar();
+		printf("||           |  Responsável:");
+	do{
+	    scanf("%[A-Z a-z 0-9]", flu->responsavel);
+		  getchar();
+	  }while(validarLetras(flu->responsavel,tamanhoString(flu->responsavel))==1);
 	printf("||           |________________________________________________________|             ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||           1-Salvar   2-Sair                                                      ||\n");
