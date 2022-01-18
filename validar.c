@@ -7,52 +7,52 @@ int validarData(int dia, int mes, int ano){
   if (mes <= 12){
     if (ano % 2 != 0){
       if(mes == 2 && dia <= 28){
-        return 1;
+        return 0;
       }
       else if(mes % 2 == 0 || mes == 9 || mes == 11){
         if (mes != 2 && mes != 8 && mes != 10 && dia <= 30){
-          return 1;
+          return 0;
         }
         else{
-          return 0;
+          return 1;
         }
       }
       else if (mes %2 != 0 || mes == 8 || mes == 10 || mes == 12){
         if (mes != 2 && mes != 9 && mes != 11 && dia <= 31){
-          return 1;
+          return 0;
         }
         else{
-          return 0;
+          return 1;
         }
       }
     }
     else{
       if(mes == 2 && dia <= 29){
-        return 1;
+        return 0;
       }
       else if(mes % 2 == 0 || mes == 9 || mes == 11){
         if (mes != 2 && mes != 8 && mes != 10 && dia <= 30){
-          return 1;
+          return 0;
         }
         else{
-          return 0;
+          return 1;
         }
       }
       else if (mes %2 != 0 || mes == 8 || mes == 10 || mes == 12){
         if (mes != 2 && mes != 9 && mes != 11 && dia <= 31){
-          return 1;
+          return 0;
         }
         else{
-          return 0;
+          return 1;
         }
       }
     }
   }
 
   else{
-    return 0;
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 
