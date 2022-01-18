@@ -16,9 +16,11 @@ void moduloFantasia(void)
 		escolha = menuFantasia();
 		switch(escolha) {
 			case '1': 	cadastroFan();
-						break;
-			case '2': 	pesquisarFantasia();
-						break;
+				break;
+			case '2': telaFantasia();
+				break;
+			case '3': 	pesquisarFantasia();
+				break;
 		} 		
 	} while (escolha != '0');
 }
@@ -47,7 +49,8 @@ char menuFantasia(void)
 	printf("||                         __________________________________                       ||\n");
 	printf("||                        |                                  |                      ||\n");
 	printf("||                        |  1. Cadastrar Fantasia           |                      ||\n");
-	printf("||                        |  2. Pesquisar Fantasia           |                      ||\n");
+	printf("||                        |  2. Exibir Fantasia              |                      ||\n");
+	printf("||                        |  3. Pesquisar Fantasia           |                      ||\n");
 	printf("||                        |  0. Voltar                       |                      ||\n");
 	printf("||                        |  'Digite a opcao desejada:'");
 	int valid;
@@ -68,7 +71,7 @@ char menuFantasia(void)
 	return escolha;
 }
 
-void telaFantasia(const Fan* fan)
+void telaFantasia()
 {
   	char escolha;
 	system("clear||cls");
@@ -88,13 +91,19 @@ void telaFantasia(const Fan* fan)
 	printf("||                      =========================================                   ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||  _____________________________________                                           ||\n");
-	printf("|| |                                     |                                          ||\n");
-	printf("|| | NOME  %s                            |                                          ||\n", fan->nome);
-	printf("|| | CODIGO  %s                          |                                          ||\n", fan->cod);
-	printf("|| | QUANTIDADE  %s                      |                                          ||\n", fan->quantidade);
-	printf("|| | TAMANHO  %s                         |                                          ||\n", fan->tamanho);
-	printf("|| | PRECO  %f                           |                                          ||\n", fan->preco);
-  	printf("|| |                1-EDITAR  2-EXCLUIR  |                                         ||\n");
+    FILE *fp;
+    char letra;
+    fp = fopen("fantasia.txt", "rt");
+    if (fp == NULL){
+      printf("Erro! O sistema não conseguiu indentificar o arquivo\n!");
+      exit(1);
+    }
+    letra = fgetc(fp);
+    while (letra != EOF) {
+      printf("%c", letra);
+      letra = fgetc(fp);
+    }
+    fclose(fp);
 	printf("|| |_____________________________________|                                          ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
@@ -207,7 +216,7 @@ Fan* cadastrarFantasia(void)
 	    int esc= validarEscolhas(escolha);
 	    if (esc==0){
 	      if (escolha=='1'){
-	        telaFantasia(fan);
+	        telaFantasia();
 	      }else if (escolha=='2'){
 	        menuFantasia();
 	      }else{

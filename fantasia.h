@@ -13,7 +13,7 @@ char menuFantasia(void);
 
 Fan* cadastrarFantasia(void);
 
-void telaFantasia(const Fan*);
+void telaFantasia();
 void cadastroFan(void);
 void editarFantasia(void);
 void pesquisarFantasia(void);
