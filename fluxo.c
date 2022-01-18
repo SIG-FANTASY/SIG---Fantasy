@@ -189,6 +189,7 @@ Flu* cadastrarGasto(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
+	fclose(fp);
   int valid;
   do{
     scanf("%c", &escolha);
