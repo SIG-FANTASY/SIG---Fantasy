@@ -135,7 +135,7 @@ Flu* cadastrarGasto(void)
 	flu = (Flu*) malloc(sizeof(Flu));
 
   FILE* fp;
-	fp = fopen("fantasia.txt","at");
+	fp = fopen("fluxo.txt","at");
 	if (fp == NULL){
 	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
 	    exit(1);
@@ -178,6 +178,7 @@ Flu* cadastrarGasto(void)
 		printf("||           |  Responsável:");
 	do{
 	    scanf("%[A-Z a-z 0-9]", flu->responsavel);
+	    fprintf(fp,"Responsável: %s\n", flu->responsavel);
 		  getchar();
 	  }while(validarLetras(flu->responsavel,tamanhoString(flu->responsavel))==1);
 	printf("||           |________________________________________________________|             ||\n");
