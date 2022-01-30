@@ -94,7 +94,7 @@ void telaVenda()
 	printf("|| |                                     |                                          ||\n");
 	    FILE *fp;
     char letra;
-    fp = fopen("venda.txt", "rt");
+    fp = fopen("venda.dat", "rt");
     if (fp == NULL){
       printf("Erro! O sistema não conseguiu indentificar o arquivo!\n");
       exit(1);
@@ -149,7 +149,7 @@ Ven* cadastrarVenda(void)
 	ven = (Ven*) malloc(sizeof(Ven));
 
 	FILE* fp;
-	fp = fopen("venda.txt","at");
+	fp = fopen("venda.dat","at");
 	if (fp == NULL){
 	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
 	    exit(1);

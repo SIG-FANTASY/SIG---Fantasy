@@ -109,11 +109,11 @@ int validarNumeros(char digitos[],int tamanho){
 }
 
 int validarEscolhas(char esc){
-  char numeros[11]={'0','1','2','3','4','5','6','7','8','9','0'};
+  char numeros[11]={'0','1','2','3','4','5','6','7','8','9'};
 
   int escolha;
 
-  for(int x=0; numeros[x] != '\0'; x++){
+  for(int x=0; x<11 ; x++){
     if(esc == numeros[x]){
         escolha=1;
         break;

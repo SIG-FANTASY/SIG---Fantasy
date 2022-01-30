@@ -5,6 +5,7 @@ struct cliente {
 	char email[51];
 	char idade[4];
 	char telefone[14];
+  char status;
 };
 
 void moduloCliente(void);
@@ -12,8 +13,10 @@ char menuCliente(void);
 
 Cli* cadastrarCliente(void);
 
-void telaCliente(void);
-void cadastroCli(void);
+void exibeCliente(Cli*);
+void gravaClientes(Cli*);
+
+void listaCliente(void);
 void editarCliente(void);
 void pesquisarCliente(void);
 void verCliente(void);

@@ -8,20 +8,24 @@
 
 	typedef struct cliente Cli; //STRUCT INSPIRADO POR @flgorgonio
 
+
 	void moduloCliente(void)
 	{
+		Cli* clit;
 		char escolha;
 		do {
 			escolha = menuCliente();
 			switch(escolha) {
-				case '1': 	cadastroCli();
+				case '1': clit=cadastrarCliente();
+						  gravaClientes(clit);
 				  break;
-				case '2':   telaCliente();
+				case '2':   listaCliente();
 				  break;
         case '3': pesquisarCliente();
           break;
 			} 		
 		} while (escolha != '0');
+		free(clit);
 	}
 
 	/////////////////////////////////////////MENU CLIENTES//////////////////////////////////////////////////////////
@@ -51,26 +55,22 @@
 		printf("||                        |  2. Exibir Cliente               |                      ||\n");
 		printf("||                        |  3. Pesquisar Cliente            |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
-		printf("||                        |  Digite a opcao desejada:");
+		printf("||                        |__________________________________|                      ||\n");
+		printf("||                                                                                  ||\n");
+		printf("||                                                                                  ||\n");
+		printf("||                                                                                  ||\n");
+		printf("||__________________________________________________________________________________||\n");
+		printf("Digite a opcao desejada:");
 		int valid;
 	    do{
 	      scanf("%c", &escolha);
 	      getchar();
 	      valid= validarEscolhas(escolha);
 	    }while(valid==1);
-		printf("||                        |__________________________________|                      ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-		printf("||__________________________________________________________________________________||\n");
 		return escolha;
 	}
 
-	void telaCliente(void)
+	void listaCliente(void)
 	{
     char escolha;
 		system("clear||cls");
@@ -90,29 +90,25 @@
 		printf("||                      =========================================                   ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||  _____________________________________                                           ||\n");
-		printf("|| |                                     |                                          ||\n");
     FILE *fp;
-    char letra;
-    fp = fopen("cliente.txt", "rt");
-    if (fp == NULL){
-      printf("Erro na leitura do arquivo\n!");
-      exit(1);
-    }
-    letra = fgetc(fp);
-    while (letra != EOF) {
-      printf("%c", letra);
-      letra = fgetc(fp);
-    }
-    fclose(fp);
-    printf("|| |_____________________________________|                                          ||\n");
+	  Cli* cli;
+	  cli = (Cli*) malloc(sizeof(Cli));
+	  fp = fopen("clientes.dat", "rb");
+	  if (fp == NULL) {
+	    printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+	    printf("Não é possível continuar este programa...\n");
+	    exit(1);
+	  }
+	  while(fread(cli, sizeof(Cli), 1, fp)) {
+	    if (cli->status != 'x') {
+	      exibeCliente(cli);
+	    }
+	  }
+	  fclose(fp);
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 		printf("||__________________________________________________________________________________||\n");
    		printf("3- Voltar");
     	int valid;
@@ -135,23 +131,10 @@
 		sleep(10);
 	}
 
-	void cadastroCli(void){
-		Cli *cli;
-		cli = cadastrarCliente();
-    	free(cli);
-	}
-
 	Cli* cadastrarCliente(void){
-    	char escolha;
+    char escolha;
 		Cli *cli;
 		cli = (Cli*) malloc(sizeof(Cli));
-
-	    FILE* fp;
-	    fp = fopen("cliente.txt","at");
-	    if (fp == NULL){
-	      printf("Erro! O sistema não conseguiu criar o arquivo\n!");
-	      exit(1);
-	    }
 		system("clear||cls");
 		printf("______________________________________________________________________________________\n");
 		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -173,59 +156,77 @@
 		printf("||           |  Nome (sem acento):");
 	    do{
 	      scanf("%[A-Z a-z 0-9]", cli->nome);
-	      fprintf(fp,"Nome: %s \n", cli->nome);
+	      printf("Nome: %s \n", cli->nome);
 			  getchar();
 	    }while(validarLetras(cli->nome,tamanhoString(cli->nome))==1);
 
 			printf("||           |  Idade:");
 	    do{
 	      scanf("%[A-Z a-z 0-9]", cli->idade);
-	      fprintf(fp,"Idade: %s \n", cli->idade);
+	      printf("Idade: %s \n", cli->idade);
 			  getchar();
 	    }while(validarNumeros(cli->idade,tamanhoString(cli->idade))==1);
 
 			printf("||           |  Email:");
 	    do{
 	      scanf("%[A-z a-z 0-9 @.-_]", cli->email);
-	      fprintf(fp,"Email: %s \n", cli->email);
+	      printf("Email: %s \n", cli->email);
 	      getchar();
 	    }while(validarEmail(cli->email,tamanhoString(cli->email))==1);
 
 			printf("||           |  Telefone:(sem tracos e pontos)");
 	    do{
 	      scanf("%[0-9]", cli->telefone);
-	      fprintf(fp,"Telefone: %s \n\n\n", cli->telefone);
+	      printf("Telefone: %s \n\n\n", cli->telefone);
 			getchar();
 	    }while(validarNumeros(cli->telefone,tamanhoString(cli->telefone))==1);
+	    cli->status='o';
 
 			printf("||           |________________________________________________________|             ||\n");
 			printf("||                                                                                  ||\n");
-			printf("||           1-salvar   2-Voltar                                                 ||\n");
-	    int valid;
-	    fclose(fp);
-	    do{
-	      scanf("%c", &escolha);
-	      getchar();
-	      int esc= validarEscolhas(escolha);
-	      if (esc==0){
-	        if (escolha=='1'){
-	          telaCliente();
-	        }else if (escolha=='2'){
-	          menuCliente();
-	        }else{
-	          valid=1;
-	        }
-	      }
-	    }while(valid==1);
-
+			printf("||           1-salvar   2-Voltar                                                    ||\n");
 			printf("||                                                                                  ||\n");
 			printf("||__________________________________________________________________________________||\n");
-			printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-			printf("||                                                                                  ||\n");
-			printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-			printf("||__________________________________________________________________________________||\n");
+	    // int valid;
+	    // do{
+	    //   scanf("%c", &escolha);
+	    //   getchar();
+	    //   int esc= validarEscolhas(escolha);
+	    //   if (esc==0){
+	    //     if (escolha=='1'){
+	    //       listaCliente();
+	    //     }else if (escolha=='2'){
+	    //       menuCliente();
+	    //     }else{
+	    //       valid=1;
+	    //     }
+	    //   }
+	    // }while(valid==1);
 	    return cli;
 	}
+
+	void exibeCliente(Cli* cl) {
+		if ((cl == NULL) || (cl->status == 'x')) {
+    		printf("\n= = = Cliente Inexistente = = =\n");
+  		} else {
+  			printf("Nome: %s\n", cl->nome);
+  			printf("Idade: %s\n", cl->idade);
+  			printf("Email: %s\n", cl->email);
+  			printf("Telefone: %s\n", cl->telefone);
+  		}
+	}
+
+	void gravaClientes(Cli* cli) {
+    FILE *fp;
+
+    fp = fopen("clientes.dat","ab");
+    fclose(fp);
+
+    fp = fopen("clientes.dat","ab");
+	  fwrite(cli, sizeof(Cli), 1, fp);
+	  fclose(fp);
+	}
+
 
 	void editarCliente(void){
     	char escolha;
@@ -256,10 +257,6 @@
 		printf("||           1-Salvar   2-Voltar                                                    ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||__________________________________________________________________________________||\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-		printf("||__________________________________________________________________________________||\n");
 		int valid;
 	    do{
 	      scanf("%c", &escolha);
@@ -267,7 +264,7 @@
 	      int esc= validarEscolhas(escolha);
 	      if (esc==0){
 	        if (escolha=='1'){
-	          cadastroCli();
+	          cadastrarCliente();
 	        }else if (escolha=='2'){
 	          menuCliente();
 	        }else{
@@ -306,10 +303,6 @@
 		printf("||                                                                                  ||\n");
 		printf("||           1-Exibir   2-Voltar                                                    ||\n");
 		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 		printf("||__________________________________________________________________________________||\n");
 	    int valid;
 	    do{
@@ -357,10 +350,6 @@
 		printf("||                                                                                  ||\n");
 		printf("||           1-Sim   2-Não                                                          ||\n");
 		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 		printf("||__________________________________________________________________________________||\n");
 	    int valid;
 	    do{
