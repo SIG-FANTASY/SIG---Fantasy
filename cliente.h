@@ -15,9 +15,7 @@ Cli* cadastrarCliente(void);
 
 void exibeCliente(Cli*);
 void gravaClientes(Cli*);
-
 void listaCliente(void);
 void editarCliente(void);
 void pesquisarCliente(void);
-void verCliente(void);
 void excluirCliente(void);

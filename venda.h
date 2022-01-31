@@ -18,5 +18,4 @@ void telaVenda();
 void cadastroVenda(void);
 void editarVenda(void);
 void excluirVenda(void);
-void verVenda(void);
 void pesquisarVendas(void);
