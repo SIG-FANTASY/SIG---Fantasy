@@ -129,11 +129,12 @@
 		        }
 		    }
 		}while(valid==1);
-		sleep(10);
+		sleep(5);
 	}
 
 	Cli* cadastrarCliente(void){
     char escolha;
+    float aux;
 		Cli *cli;
 		cli = (Cli*) malloc(sizeof(Cli));
 		system("clear||cls");
@@ -154,12 +155,13 @@
 		printf("||                                                                                  ||\n");
 		printf("||            ________________________________________________________              ||\n");
 		printf("||           |                                                        |             ||\n");
-    	printf("||           |  Código: (somente números):");
-      do{
-	      scanf("%[0-9]", cli->cod);
-	      printf("Código: %s \n", cli->cod);
-			  getchar();
-	    }while(validarNumeros(cli->cod, tamanhoString(cli->cod))==1);
+    printf("||           |  Código: (somente números):");
+    while(aux != cli->cod || cli->cod == 0){
+      scanf("%f", &aux);
+      getchar();
+      cli->cod = aux;
+    }
+    printf("Código: %d\n", cli->cod);
 		printf("||           |  Nome (sem acento):");
 	    do{
 	      scanf("%[A-Z a-z 0-9]", cli->nome);
@@ -216,11 +218,12 @@
 		if ((cl == NULL) || (cl->status == 'x')) {
     		printf("\n= = = Cliente Inexistente = = =\n");
   		} else {
-        printf("Código: %s\n", cl->cod);
+        printf("Código: %d\n", cl->cod);
   			printf("Nome: %s\n", cl->nome);
   			printf("Idade: %s\n", cl->idade);
   			printf("Email: %s\n", cl->email);
   			printf("Telefone: %s\n", cl->telefone);
+        sleep(2);
   		}
 	}
 
@@ -303,10 +306,10 @@
 		printf("||            ________________________________________________________              ||\n");
 	    FILE* fp;
 	    Cli* cliente;
-	    char codigo[15];
+	    int codigo;
 	    printf("\n = Buscar Cliente = \n"); 
 	    printf("Informe o codigo: "); 
-	    scanf("%s", codigo);
+	    scanf("%d", &codigo);
 	    cliente = (Cli*) malloc(sizeof(Cli));
 	    fp = fopen("clientes.dat", "rb");
 	    if (fp == NULL) {

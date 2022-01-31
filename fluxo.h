@@ -1,7 +1,7 @@
 typedef struct fluxo Flu; //STRUCT INSPIRADO POR @flgorgonio
 
 struct fluxo{
-	char cod[15];
+	int cod;
 	char motivo[51];
 	int dia;
   	int mes;

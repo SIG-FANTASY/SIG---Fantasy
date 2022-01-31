@@ -1,7 +1,7 @@
 typedef struct cliente Cli; //STRUCT INSPIRADO POR @flgorgonio
 
 struct cliente {
-  char cod[15];
+  int cod;
   char nome[101];
   char email[51];
   char idade[4];

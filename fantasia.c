@@ -20,7 +20,8 @@ void moduloFantasia(void)
         break;
       case '2': listaFantasia();
         break;
-      case '3':   pesquisarFantasia();
+      case '3': fant=pesquisarFantasia();
+        exibeFantasia(fant);
         break;
     }     
   } while (escolha != '0');
@@ -134,8 +135,9 @@ void listaFantasia()
 Fan* cadastrarFantasia(void)
 {
   char escolha;
-    Fan *fan;
-    fan = (Fan*) malloc(sizeof(Fan));
+  float aux;
+  Fan *fan;
+  fan = (Fan*) malloc(sizeof(Fan));
   
   system("clear||cls");
   printf("______________________________________________________________________________________\n");
@@ -156,12 +158,13 @@ Fan* cadastrarFantasia(void)
   printf("||            ________________________________________________________              ||\n");
   printf("||           |                                                        |             ||\n");
   printf("||           |  Cód.Fantasia:");
-  do{
-      scanf("%[A-Z a-z 0-9]", fan->cod);
-      printf("Cod: %s\n", fan->cod);
-      getchar();
-  }while(validarNumeros(fan->cod,tamanhoString(fan->cod))==1);
-    printf("||           |  Nome:");
+  while(aux != fan->cod || fan->cod == 0){
+    scanf("%f", &aux);
+    getchar();
+    fan->cod = aux;
+  }
+    printf("Cod: %d\n", fan->cod);
+  printf("||           |  Nome:");
   do{
       scanf("%[A-Z a-z]", fan->nome);
       printf("Nome: %s\n", fan->nome);
@@ -199,11 +202,12 @@ Fan* cadastrarFantasia(void)
     if ((fn == NULL) || (fn->status == 'x')) {
         printf("\n= = = Fantasia Inexistente = = =\n");
       } else {
-        printf("Codigo: %s\n", fn->cod);
+        printf("Codigo: %d\n", fn->cod);
         printf("Nome: %s\n", fn->nome);
         printf("Quantidade: %s\n", fn->quantidade);
         printf("Tamanho: %s\n", fn->tamanho);
         printf("Preco: %f\n\n\n", fn->preco);
+        sleep(3);
       }
   }
 
@@ -289,25 +293,25 @@ Fan* pesquisarFantasia(void)
   printf("||                      =========================================                   ||\n");
   printf("||                                                                                  ||\n");
   printf("||            ________________________________________________________              ||\n");
-    FILE* fp;
-    Fan* fantasia;
-    char codigo[15];
-    printf("\n = Buscar Fantasia = \n"); 
-    printf("Informe o codigo: "); 
-    scanf("%s", codigo);
-    fantasia = (Fan*) malloc(sizeof(Fan));
-    fp = fopen("fantasia.dat", "rb");
-    if (fp == NULL) {
-      printf("O programa não conseguiu encontrar o arquivo!\n");
-      exit(1);
+  FILE* fp;
+  Fan* fantasia;
+  int codigo;
+  printf("\n = Buscar Fantasia = \n"); 
+  printf("Informe o codigo: "); 
+  scanf("%d", &codigo);
+  fantasia = (Fan*) malloc(sizeof(Fan));
+  fp = fopen("fantasias.dat", "rb");
+  if (fp == NULL) {
+    printf("O programa não conseguiu encontrar o arquivo!\n");
+    exit(1);
+  }
+  while(!feof(fp)) {
+    fread(fantasia, sizeof(Fan), 1, fp);
+    if ((fantasia->cod == codigo) && (fantasia->status != 'x')) {
+      fclose(fp);
+      return fantasia;
     }
-    while(!feof(fp)) {
-      fread(fantasia, sizeof(Fan), 1, fp);
-      if ((fantasia->cod == codigo) && (fantasia->status != 'x')) {
-        fclose(fp);
-        return fantasia;
-      }
-    }
+  }
     fclose(fp);
     return NULL;
     printf("||           |________________________________________________________|             ||\n");

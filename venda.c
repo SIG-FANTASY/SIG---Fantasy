@@ -131,12 +131,13 @@ void listaVenda(void)
 		   	}
 		}
 	}while(valid==1);
-	sleep(10);
+	sleep(5);
 }
 
 Ven* cadastrarVenda(void)
 {
 	char escolha;
+  float aux;
 	Ven *ven;
 	ven = (Ven*) malloc(sizeof(Ven));
 	system("clear||cls");
@@ -158,11 +159,12 @@ Ven* cadastrarVenda(void)
 	printf("||            ________________________________________________________              ||\n");
 	printf("||           |                                                        |             ||\n");
 	printf("||           |  Cód. Produto:");
-  do{
-    scanf("%[A-Z a-z 0-9]", ven->cod);
-    printf("Codigo: %s\n", ven->cod);
-  	getchar();
-  }while(validarNumeros(ven->cod,tamanhoString(ven->cod))==1);
+  while(aux != ven->cod || ven->cod == 0){
+    scanf("%f", &aux);
+    getchar();
+    ven->cod = aux;
+  }
+  printf("Código: %d\n", ven->cod);
 	printf("||           |  Cód. Cliente:");
   do{
     scanf("%[A-Z a-z 0-9]", ven->cliente);
@@ -212,10 +214,11 @@ void exibeVenda(Ven* ven) {
 	if ((ven == NULL) || (ven->status == 'x')) {
     	printf("\n= = = Venda Inexistente = = =\n");
   	} else {
-       printf("Código: %s\n", ven->cod);
+       printf("Código: %d\n", ven->cod);
   		printf("Cliente: %s\n", ven->cliente);
   		printf("Data: %d/%d/%d\n", ven->dia,ven->mes,ven->ano);
   		printf("Aluguel: %s\n\n", &ven->aluguel);
+      sleep(3);
   	}
 }
 
@@ -253,10 +256,10 @@ Ven* pesquisarVendas(void)
 	printf("||           |                                                        |             ||\n");
 	FILE* fp;
 	Ven* venda;
-	char codigo[15];
+	int codigo;
 	printf("\n = Buscar Vendas = \n"); 
 	printf("Informe o codigo: "); 
-	scanf("%s", codigo);
+	scanf("%d", &codigo);
 	venda = (Ven*) malloc(sizeof(Ven));
 	fp = fopen("venda.dat", "rb");
 	if (fp == NULL) {

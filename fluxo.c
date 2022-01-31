@@ -135,6 +135,7 @@ void listaFluxo()
 Flu* cadastrarGasto(void)
 {
   char escolha;
+  float aux;
   Flu *flu;
   flu = (Flu*) malloc(sizeof(Flu));
 
@@ -157,11 +158,12 @@ Flu* cadastrarGasto(void)
   printf("||            ________________________________________________________              ||\n");
   printf("||           |                                                        |             ||\n");
   printf("||           |  Código (apenas números):");
-  do{
-      scanf("%[0-9]", flu->cod);
-      printf("Código: %s\n", flu->cod);
-      getchar();
-    }while(validarNumeros(flu->cod,tamanhoString(flu->cod))==1);
+  while(aux != flu->cod || flu->cod == 0){
+    scanf("%f", &aux);
+    getchar();
+    flu->cod = aux;
+  }
+  printf("Código: %d\n", flu->cod);
   printf("||           |  Motivo:");
   do{
       scanf("%[A-Z a-z 0-9]", flu->motivo);
@@ -187,7 +189,7 @@ Flu* cadastrarGasto(void)
   flu->status='o';
   printf("||           |________________________________________________________|             ||\n");
   printf("||                                                                                  ||\n");
-  printf("||                                                                                  ||\n");
+  printf("||           1-Salvar   2- Voltar                                                   ||\n");
   printf("||__________________________________________________________________________________||\n");
   return flu;
 }
@@ -196,11 +198,12 @@ Flu* cadastrarGasto(void)
     if ((fl == NULL) || (fl->status == 'x')) {
         printf("\n= = = Cliente Inexistente = = =\n");
       } else {
-      	printf("Código: %s\n", fl->cod);
+        printf("Código: %d\n", fl->cod);
         printf("Motivo: %s\n", fl->motivo);
         printf("Data: %d/%d/%d\n", fl->dia, fl->mes, fl->ano);
         printf("Valor: %f\n", fl->valor);
         printf("Responsável: %s\n\n\n", fl->responsavel);
+        sleep(5);
       }
   }
 
@@ -238,10 +241,10 @@ Flu* pesquisarFluxo(void)
   printf("||            ________________________________________________________              ||\n");
   FILE* fp;
   Flu* fluxo;
-  char codigo[15];
+  int codigo;
   printf("\n = Buscar Gastos = \n"); 
   printf("Informe o codigo: "); 
-  scanf("%s", codigo);
+  scanf("%d", &codigo);
   fluxo = (Flu*) malloc(sizeof(Flu));
   fp = fopen("fluxo.dat", "rb");
   if (fp == NULL) {

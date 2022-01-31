@@ -1,7 +1,7 @@
 typedef struct venda Ven; //STRUCT INSPIRADO POR @flgorgonio
 
 struct venda {
-	char cod[15];
+	int cod;
 	char cliente[15];
 	int dia;
 	int mes;
