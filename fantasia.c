@@ -197,13 +197,13 @@ Fan* cadastrarFantasia(void)
 
   void exibeFantasia(Fan* fn) {
     if ((fn == NULL) || (fn->status == 'x')) {
-        printf("\n= = = Cliente Inexistente = = =\n");
+        printf("\n= = = Fantasia Inexistente = = =\n");
       } else {
         printf("Codigo: %s\n", fn->cod);
         printf("Nome: %s\n", fn->nome);
         printf("Quantidade: %s\n", fn->quantidade);
         printf("Tamanho: %s\n", fn->tamanho);
-        printf("Preco: %f\n", fn->preco);
+        printf("Preco: %f\n\n\n", fn->preco);
       }
   }
 
@@ -269,7 +269,7 @@ void editarFantasia(void)
     }while(valid==1);
 }
 
-void pesquisarFantasia(void)
+Fan* pesquisarFantasia(void)
 {
   char escolha;
   system("clear||cls");
@@ -285,37 +285,58 @@ void pesquisarFantasia(void)
   printf("||                                                                                  ||\n");
   printf("||                                                                                  ||\n");
   printf("||                      =========================================                   ||\n");
-  printf("||                      ====      Pesquisar Fantasia         ====                   ||\n");
+  printf("||                      ====       Pesquisar Fantasia        ====                   ||\n");
   printf("||                      =========================================                   ||\n");
   printf("||                                                                                  ||\n");
   printf("||            ________________________________________________________              ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |  Pesquisa:[Nome da fantasia]                           |             ||\n");
-  printf("||           |________________________________________________________|             ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||           1-Pesquisar   2-Voltar                                                 ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||__________________________________________________________________________________||\n");
-  printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-  printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-      scanf("%c", &escolha);
-      getchar();
-      int esc= validarEscolhas(escolha);
-      if (esc==0){
-        if (escolha=='1'){
-          // ainda será organizado
-        }else if (escolha=='2'){
-          menuFantasia();
-        }else{
-          valid=1;
-        }
+    FILE* fp;
+    Fan* fantasia;
+    char codigo[15];
+    printf("\n = Buscar Fantasia = \n"); 
+    printf("Informe o codigo: "); 
+    scanf("%s", codigo);
+    fantasia = (Fan*) malloc(sizeof(Fan));
+    fp = fopen("fantasia.dat", "rb");
+    if (fp == NULL) {
+      printf("O programa não conseguiu encontrar o arquivo!\n");
+      exit(1);
+    }
+    while(!feof(fp)) {
+      fread(fantasia, sizeof(Fan), 1, fp);
+      if ((fantasia->cod == codigo) && (fantasia->status != 'x')) {
+        fclose(fp);
+        return fantasia;
       }
-    }while(valid==1);
+    }
+    fclose(fp);
+    return NULL;
+    printf("||           |________________________________________________________|             ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||           1-Excluir   2-Editar   3-Voltar                                        ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||__________________________________________________________________________________||\n");
+    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
+    printf("||__________________________________________________________________________________||\n");
+    int valid;
+    do{
+    scanf("%c", &escolha);
+    getchar();
+    int esc= validarEscolhas(escolha);
+    if (esc==0){
+      if (escolha=='1'){
+        // ainda será organizado
+      }else if (escolha == '2'){
+        // ainda será organizado
+      }else if (escolha=='3'){
+        menuFantasia();
+      }else{
+        valid=1;
+      }
+    }
+  }while(valid==1);
 }
 
 
@@ -353,7 +374,7 @@ void excluirFantasia(void)
   printf("||                                                                                  ||\n");
   printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
   printf("||__________________________________________________________________________________||\n");
-    int valid;
+  int valid;
   do{
       scanf("%c", &escolha);
       getchar();

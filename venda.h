@@ -6,7 +6,8 @@ struct venda {
 	int dia;
 	int mes;
 	int ano;
-	int aluguel;
+	char aluguel;
+	char status;
 };
 
 void moduloVenda(void);
@@ -14,8 +15,9 @@ char menuVenda(void);
 
 Ven* cadastrarVenda(void);
 
-void telaVenda();
-void cadastroVenda(void);
+void exibeVenda(Ven*);
+void gravaVendas(Ven*);
+void listaVenda(void);
 void editarVenda(void);
 void excluirVenda(void);
-void pesquisarVendas(void);
+Ven* pesquisarVendas(void);

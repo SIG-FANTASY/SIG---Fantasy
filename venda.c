@@ -11,16 +11,18 @@ typedef struct venda Ven;
 
 void moduloVenda(void)
 {
-
+	Ven* vn;
 	char escolha;
 	do {
 		escolha = menuVenda();
 		switch(escolha) {
-			case '1': cadastroVenda();
+			case '1': vn=cadastrarVenda();
+				gravaVendas(vn);
 				break;
-			case '2': telaVenda();
+			case '2': listaVenda();
 				break;
-			case '3': pesquisarVendas();
+			case '3': vn=pesquisarVendas();
+				exibeVenda(vn);
 				break;
 		} 		
 	} while (escolha != '0');  
@@ -71,9 +73,9 @@ char menuVenda(void)
 	return escolha;
 }
 
-void telaVenda()
+void listaVenda(void)
 {
-  char escolha;
+	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -87,59 +89,49 @@ void telaVenda()
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                      =========================================                   ||\n");
-	printf("||                      ====              Vendas             ====                   ||\n");
+	printf("||                      ====       Catalogo Vendas           ====                   ||\n");
 	printf("||                      =========================================                   ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||  _____________________________________                                           ||\n");
-	printf("|| |                                     |                                          ||\n");
-	    FILE *fp;
-    char letra;
-    fp = fopen("venda.dat", "rt");
-    if (fp == NULL){
-      printf("Erro! O sistema não conseguiu indentificar o arquivo!\n");
-      exit(1);
-    }
-    letra = fgetc(fp);
-    while (letra != EOF) {
-      printf("%c", letra);
-      letra = fgetc(fp);
-    }
-    fclose(fp);
-    printf("|| |                1-EDITAR  2-EXCLUIR  |                                          ||\n");
-	printf("|| |_____________________________________|                                          ||\n");
+    FILE *fp;
+	Ven* venda;
+	venda = (Ven*) malloc(sizeof(Ven));
+	fp = fopen("venda.dat", "rb");
+	if (fp == NULL) {
+	   printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+	   printf("Não é possível continuar este programa...\n");
+	   exit(1);
+	}
+	while(fread(venda, sizeof(Ven), 1, fp)) {
+		if (venda->status != 'x') {
+		    exibeVenda(venda);
+		}
+	}
+	fclose(fp);
+	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||__________________________________________________________________________________||\n");
-	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-	printf("||__________________________________________________________________________________||\n");
-  printf("3-voltar");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        editarVenda();
-      }else if (escolha=='2'){
-        excluirVenda();
-      }else if (escolha=='3'){
-        menuVenda();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
-	sleep(5);
-}
-
-void cadastroVenda(void){
-	Ven *ven;
-	ven = cadastrarVenda();
-	free(ven);
+	printf("3- Voltar");
+	int valid;
+	do{
+		scanf("%c", &escolha);
+		getchar();
+		int esc= validarEscolhas(escolha);
+		if (esc==0){
+			if (escolha=='1'){
+		    	editarVenda();         
+		   	}else if (escolha=='2'){
+		    	excluirVenda();
+		   	}else if (escolha=='3'){
+		    	menuVenda();
+		   	}else{
+		    	valid=1;
+		   	}
+		}
+	}while(valid==1);
+	sleep(10);
 }
 
 Ven* cadastrarVenda(void)
@@ -147,13 +139,6 @@ Ven* cadastrarVenda(void)
 	char escolha;
 	Ven *ven;
 	ven = (Ven*) malloc(sizeof(Ven));
-
-	FILE* fp;
-	fp = fopen("venda.dat","at");
-	if (fp == NULL){
-	    printf("Erro! O sistema não conseguiu criar o arquivo\n!");
-	    exit(1);
-	}
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -175,24 +160,24 @@ Ven* cadastrarVenda(void)
 	printf("||           |  Cód. Produto:");
   do{
     scanf("%[A-Z a-z 0-9]", ven->cod);
-    fprintf(fp,"Codigo: %s\n", ven->cod);
+    printf("Codigo: %s\n", ven->cod);
   	getchar();
   }while(validarNumeros(ven->cod,tamanhoString(ven->cod))==1);
 	printf("||           |  Cód. Cliente:");
   do{
     scanf("%[A-Z a-z 0-9]", ven->cliente);
-    fprintf(fp,"Cliente: %s\n", ven->cliente);
+    printf("Cliente: %s\n", ven->cliente);
   	getchar();
   }while(validarNumeros(ven->cliente,tamanhoString(ven->cliente))==1);
 	printf("||           |  Data (DD MM AA):");
   do{
     scanf("%d %d %d", &ven->dia, &ven->mes, &ven->ano);
-    fprintf(fp,"Data: %d/%d/%d\n", ven->dia, ven->mes, ven->ano);
+    printf("Data: %d/%d/%d\n", ven->dia, ven->mes, ven->ano);
   	getchar();
   }while(validarData(ven->dia,ven->mes,ven->ano)==1);
 	printf("||           |  Aluguel (dias):(use ponto para separar os centavos Ex: 00.00)");
-  	scanf("%d", &ven->aluguel);
-  	fprintf(fp,"Aluguel: %d\n\n\n", ven->aluguel);
+  	scanf("%s", &ven->aluguel);
+  	printf("Aluguel: %d\n\n\n", ven->aluguel);
   	getchar();
 	//printf("||           |  Total:[aluguel*valor]                                 |             ||\n");
 	printf("||           |________________________________________________________|             ||\n");
@@ -204,15 +189,14 @@ Ven* cadastrarVenda(void)
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-	fclose(fp);
-  int valid;
+/*  int valid;
   do{
     scanf("%c", &escolha);
     getchar();
     int esc= validarEscolhas(escolha);
     if (esc==0){
       if (escolha=='1'){
-        telaVenda();
+        listaVenda();
       }else if (escolha=='2'){
         menuVenda();
       }else{
@@ -220,13 +204,35 @@ Ven* cadastrarVenda(void)
       }
     }
   }while(valid==1);
-  
+*/  
  	return ven;
 }
 
-void pesquisarVendas(void)
+void exibeVenda(Ven* ven) {
+	if ((ven == NULL) || (ven->status == 'x')) {
+    	printf("\n= = = Venda Inexistente = = =\n");
+  	} else {
+       printf("Código: %s\n", ven->cod);
+  		printf("Cliente: %s\n", ven->cliente);
+  		printf("Data: %d/%d/%d\n", ven->dia,ven->mes,ven->ano);
+  		printf("Aluguel: %s\n\n", &ven->aluguel);
+  	}
+}
+
+void gravaVendas(Ven* venda) {
+	FILE *fp;
+
+	fp = fopen("venda.dat","ab");
+    fclose(fp);
+
+    fp = fopen("venda.dat","ab");
+	  fwrite(venda, sizeof(Ven), 1, fp);
+	  fclose(fp);
+	}
+
+Ven* pesquisarVendas(void)
 {
-  char escolha;
+  	char escolha;
 	system("clear||cls");
 	printf("______________________________________________________________________________________\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -245,32 +251,54 @@ void pesquisarVendas(void)
 	printf("||                                                                                  ||\n");
 	printf("||            ________________________________________________________              ||\n");
 	printf("||           |                                                        |             ||\n");
-	printf("||           |  Pesquisa:[Data   ]                                    |             ||\n");
+	FILE* fp;
+	Ven* venda;
+	char codigo[15];
+	printf("\n = Buscar Vendas = \n"); 
+	printf("Informe o codigo: "); 
+	scanf("%s", codigo);
+	venda = (Ven*) malloc(sizeof(Ven));
+	fp = fopen("venda.dat", "rb");
+	if (fp == NULL) {
+	  printf("O programa não conseguiu encontrar o arquivo!\n");
+	  exit(1);
+	}
+	while(!feof(fp)) {
+		fread(venda, sizeof(Ven), 1, fp);
+	  	if ((venda->cod == codigo) && (venda->status != 'x')) {
+	    	fclose(fp);
+	    	return venda;
+	  	}
+	}
+	fclose(fp);
+	return NULL;
 	printf("||           |________________________________________________________|             ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
-	printf("||           1-Pesquisar   2-Voltar                                                 ||\n");
+	printf("||           1-Excluir   2-Editar   3-Voltar                                        ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||__________________________________________________________________________________||\n");
 	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        // ainda será organizado
-      }else if (escolha=='2'){
-        menuVenda();
-      }else{
-        valid=1;
-      }
-    }
-  }while(valid==1);
+	int valid;
+	do{
+		scanf("%c", &escolha);
+	    getchar();
+	    int esc= validarEscolhas(escolha);
+	    if (esc==0){
+	      if (escolha=='1'){
+	        // ainda será organizado
+	      }else if (escolha == '2'){
+	        // ainda será organizado
+	      }else if (escolha=='3'){
+	      	menuVenda();
+	      }else{
+	        valid=1;
+	      }
+	    }
+	}while(valid==1);
 }
 
 

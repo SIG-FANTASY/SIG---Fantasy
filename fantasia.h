@@ -19,5 +19,5 @@ void gravaFantasia(Fan*);
 
 void listaFantasia(void);
 void editarFantasia(void);
-void pesquisarFantasia(void);
+Fan* pesquisarFantasia(void);
 void excluirFantasia(void);

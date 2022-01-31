@@ -16,12 +16,13 @@ void moduloFluxo(void)
     escolha = menuFluxo();
     switch(escolha) {
       case '1':   flux=cadastrarGasto();
-                  gravaGasto(flux);
+        gravaGasto(flux);
         break;
       case '2': listaFluxo();
         break;
-          case '3': pesquisarFluxo();
-            break;
+      case '3': flux=pesquisarFluxo();
+        exibeFluxo(flux);
+        break;
     }     
   } while (escolha != '0'); 
   free(flux);
@@ -155,6 +156,12 @@ Flu* cadastrarGasto(void)
   printf("||                                                                                  ||\n");
   printf("||            ________________________________________________________              ||\n");
   printf("||           |                                                        |             ||\n");
+  printf("||           |  Código (apenas números):");
+  do{
+      scanf("%[0-9]", flu->cod);
+      printf("Código: %s\n", flu->cod);
+      getchar();
+    }while(validarNumeros(flu->cod,tamanhoString(flu->cod))==1);
   printf("||           |  Motivo:");
   do{
       scanf("%[A-Z a-z 0-9]", flu->motivo);
@@ -174,7 +181,7 @@ Flu* cadastrarGasto(void)
     printf("||           |  Responsável:");
   do{
       scanf("%[A-Z a-z 0-9]", flu->responsavel);
-      printf("Responsável: %s\n", flu->responsavel);
+      printf("Responsável: %s\n\n\n", flu->responsavel);
       getchar();
     }while(validarLetras(flu->responsavel,tamanhoString(flu->responsavel))==1);
   flu->status='o';
@@ -189,10 +196,11 @@ Flu* cadastrarGasto(void)
     if ((fl == NULL) || (fl->status == 'x')) {
         printf("\n= = = Cliente Inexistente = = =\n");
       } else {
+      	printf("Código: %s\n", fl->cod);
         printf("Motivo: %s\n", fl->motivo);
         printf("Data: %d/%d/%d\n", fl->dia, fl->mes, fl->ano);
         printf("Valor: %f\n", fl->valor);
-        printf("Responsável: %s\n", fl->responsavel);
+        printf("Responsável: %s\n\n\n", fl->responsavel);
       }
   }
 
@@ -208,7 +216,7 @@ Flu* cadastrarGasto(void)
   }
 
 
-void pesquisarFluxo(void)
+Flu* pesquisarFluxo(void)
 {
   char escolha;
   system("clear||cls");
@@ -228,12 +236,31 @@ void pesquisarFluxo(void)
   printf("||                      =========================================                   ||\n");
   printf("||                                                                                  ||\n");
   printf("||            ________________________________________________________              ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |  Pesquisa:[Data   ]                                    |             ||\n");
+  FILE* fp;
+  Flu* fluxo;
+  char codigo[15];
+  printf("\n = Buscar Gastos = \n"); 
+  printf("Informe o codigo: "); 
+  scanf("%s", codigo);
+  fluxo = (Flu*) malloc(sizeof(Flu));
+  fp = fopen("fluxo.dat", "rb");
+  if (fp == NULL) {
+    printf("O programa não conseguiu encontrar o arquivo!\n");
+    exit(1);
+  }
+  while(!feof(fp)) {
+    fread(fluxo, sizeof(Flu), 1, fp);
+    if ((fluxo->cod == codigo) && (fluxo->status != 'x')) {
+      fclose(fp);
+        return fluxo;
+    }
+  }
+  fclose(fp);
+  return NULL;
   printf("||           |________________________________________________________|             ||\n");
   printf("||                                                                                  ||\n");
   printf("||                                                                                  ||\n");
-  printf("||           1-Pesquisar   2-Voltar                                                 ||\n");
+  printf("||           1-Excluir   2-Editar   3-Voltar                                        ||\n");
   printf("||                                                                                  ||\n");
   printf("||__________________________________________________________________________________||\n");
   printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -248,7 +275,9 @@ void pesquisarFluxo(void)
     if (esc==0){
       if (escolha=='1'){
         // ainda será organizado
-      }else if (escolha=='2'){
+      }else if (escolha == '2'){
+        // ainda será organizado
+      }else if (escolha=='3'){
         menuFluxo();
       }else{
         valid=1;
