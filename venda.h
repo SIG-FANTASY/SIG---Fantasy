@@ -19,5 +19,5 @@ void exibeVenda(Ven*);
 void gravaVendas(Ven*);
 void listaVenda(void);
 void editarVenda(void);
-void excluirVenda(void);
+void excluirVenda(Ven*);
 Ven* pesquisarVendas(void);

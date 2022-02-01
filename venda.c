@@ -16,14 +16,20 @@ void moduloVenda(void)
 	do {
 		escolha = menuVenda();
 		switch(escolha) {
-			case '1': vn=cadastrarVenda();
+			case '1': 
+        vn=cadastrarVenda();
 				gravaVendas(vn);
 				break;
-			case '2': listaVenda();
+			case '2': 
+        listaVenda();
 				break;
-			case '3': vn=pesquisarVendas();
+			case '3': 
+        vn=pesquisarVendas();
 				exibeVenda(vn);
 				break;
+      case '4':
+        vn=pesquisarVendas();
+        excluirVenda(vn);
 		} 		
 	} while (escolha != '0');  
 }
@@ -53,6 +59,7 @@ char menuVenda(void)
 	printf("||                        |  1. Cadastrar Vendas             |                      ||\n");
 	printf("||                        |  2. Exibir Vendas                |                      ||\n");
 	printf("||                        |  3. Pesquisar Vendas             |                      ||\n");
+  printf("||                        |  4. Excluir Vendas             |                      ||\n");
 	printf("||                        |  0. Voltar                       |                      ||\n");
 	printf("||                        |  'Digite a opcao desejada:'");
 	int valid;
@@ -113,7 +120,7 @@ void listaVenda(void)
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||__________________________________________________________________________________||\n");
-	printf("3- Voltar");
+	printf("1- Voltar");
 	int valid;
 	do{
 		scanf("%c", &escolha);
@@ -121,10 +128,6 @@ void listaVenda(void)
 		int esc= validarEscolhas(escolha);
 		if (esc==0){
 			if (escolha=='1'){
-		    	editarVenda();         
-		   	}else if (escolha=='2'){
-		    	excluirVenda();
-		   	}else if (escolha=='3'){
 		    	menuVenda();
 		   	}else{
 		    	valid=1;
@@ -278,30 +281,9 @@ Ven* pesquisarVendas(void)
 	printf("||           |________________________________________________________|             ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||                                                                                  ||\n");
-	printf("||           1-Excluir   2-Editar   3-Voltar                                        ||\n");
 	printf("||                                                                                  ||\n");
 	printf("||__________________________________________________________________________________||\n");
-	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-	printf("||__________________________________________________________________________________||\n");
-	int valid;
-	do{
-		scanf("%c", &escolha);
-	    getchar();
-	    int esc= validarEscolhas(escolha);
-	    if (esc==0){
-	      if (escolha=='1'){
-	        // ainda será organizado
-	      }else if (escolha == '2'){
-	        // ainda será organizado
-	      }else if (escolha=='3'){
-	      	menuVenda();
-	      }else{
-	        valid=1;
-	      }
-	    }
-	}while(valid==1);
+
 }
 
 
@@ -357,53 +339,35 @@ void editarVenda(void)
   }while(valid==1);
 }
 
-void excluirVenda(void)
-{
-  char escolha;
-	system("clear||cls");
-	printf("______________________________________________________________________________________\n");
-	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	printf("||__________________________________________________________________________________||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-	printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
-	printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-	printf("||                                                                                  ||\n");
-	printf("||==================================================================================||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                      =========================================                   ||\n");
-	printf("||                      ====            Venda                ====                   ||\n");
-	printf("||                      =========================================                   ||\n");
-	printf("||                                                                                  ||\n");
-	printf("||            ________________________________________________________              ||\n");
-	printf("||           |                                                        |             ||\n");
-	printf("||           |  Você realmente deseja excluir essa Venda?             |             ||\n");
-	printf("||           |                                                        |             ||\n");
-	printf("||           |                                                        |             ||\n");
-	printf("||           |                                                        |             ||\n");
-	printf("||           |________________________________________________________|             ||\n");
-	printf("||                                                                                  ||\n");
-	printf("||           1-Sim   2-Não                                                          ||\n");
-	printf("||                                                                                  ||\n");
-	printf("||__________________________________________________________________________________||\n");
-	printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	printf("||                                                                                  ||\n");
-	printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-	printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-    scanf("%c", &escolha);
-    getchar();
-    int esc= validarEscolhas(escolha);
-    if (esc==0){
-      if (escolha=='1'){
-        //telaVenda(ven); ainda será organizado
-      }else if (escolha=='2'){
-        //telaVenda(ven); ainda será organizado
-      }else{
-        valid=1;
+void excluirVenda(Ven* venLido) {
+  FILE* fp;
+  Ven* venArq;
+  int achou = 0;
+  if (venLido == NULL) {
+    printf("Ops! O aluno informado não existe!\n");
+  }
+  else {
+    venArq = (Ven*) malloc(sizeof(Ven));
+    fp = fopen("venda.dat", "r+b");
+    if (fp == NULL) {
+      printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+      printf("Não é possível continuar este programa...\n");
+      exit(1);
+    }
+    while(!feof(fp)) {
+      fread(venArq, sizeof(Ven), 1, fp);
+      if ((venArq->cod == venLido->cod) && (venArq->status != 'x')) {
+        achou = 1;
+        venArq->status = 'x';
+        fseek(fp, -1*sizeof(Ven), SEEK_CUR);
+        fwrite(venArq, sizeof(Ven), 1, fp);
+        printf("\nVenda excluída com sucesso!!!\n");
+        sleep(2);
       }
     }
-  }while(valid==1);
+    if (!achou) {
+      printf("\nVenda não encontrada!\n");
+    }
+    fclose(fp);
+  }
 }

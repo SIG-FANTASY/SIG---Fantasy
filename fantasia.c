@@ -15,13 +15,20 @@ void moduloFantasia(void)
   do {
     escolha = menuFantasia();
     switch(escolha) {
-      case '1':   fant=cadastrarFantasia();
-                  gravaFantasia(fant);
+      case '1':   
+        fant=cadastrarFantasia();
+        gravaFantasia(fant);
         break;
-      case '2': listaFantasia();
+      case '2': 
+        listaFantasia();
         break;
-      case '3': fant=pesquisarFantasia();
+      case '3': 
+        fant=pesquisarFantasia();
         exibeFantasia(fant);
+        break;
+      case '4':
+        fant=pesquisarFantasia();
+        excluirFantasia(fant);
         break;
     }     
   } while (escolha != '0');
@@ -53,6 +60,7 @@ char menuFantasia(void)
   printf("||                        |  1. Cadastrar Fantasia           |                      ||\n");
   printf("||                        |  2. Exibir Fantasia              |                      ||\n");
   printf("||                        |  3. Pesquisar Fantasia           |                      ||\n");
+  printf("||                        |  4. Excluir Fantasia             |                      ||\n");
   printf("||                        |  0. Voltar                       |                      ||\n");
   printf("||                        |__________________________________|                      ||\n");
   printf("||                                                                                  ||\n");
@@ -107,11 +115,7 @@ void listaFantasia()
   printf("||                                                                                  ||\n");
   printf("||                                                                                  ||\n");
   printf("||__________________________________________________________________________________||\n");
-  printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-  printf("||__________________________________________________________________________________||\n");
-  printf("3-voltar");
+  printf("1-voltar");
   int valid;
   do{
       scanf("%c", &escolha);
@@ -119,10 +123,6 @@ void listaFantasia()
       int esc= validarEscolhas(escolha);
       if (esc==0){
         if (escolha=='1'){
-          editarFantasia();
-        }else if (escolha=='2'){
-          excluirFantasia();
-        }else if (escolha=='3'){
           menuFantasia();
         }else{
           valid=1;
@@ -344,54 +344,34 @@ Fan* pesquisarFantasia(void)
 }
 
 
-void excluirFantasia(void)
-{
-    char escolha;
-  system("clear||cls");
-  printf("______________________________________________________________________________________\n");
-  printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-  printf("||__________________________________________________________________________________||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-  printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
-  printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||==================================================================================||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                      =========================================                   ||\n");
-  printf("||                      ====            Fantasia             ====                   ||\n");
-  printf("||                      =========================================                   ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||            ________________________________________________________              ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |  Você realmente deseja excluir essa fantasia?          |             ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |                                                        |             ||\n");
-  printf("||           |________________________________________________________|             ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||           1-Sim   2-Não                                                          ||\n");
-  printf("||                                                                                  ||\n");
-  printf("||__________________________________________________________________________________||\n");
-  printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-  printf("||                                                                                  ||\n");
-  printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-  printf("||__________________________________________________________________________________||\n");
-  int valid;
-  do{
-      scanf("%c", &escolha);
-      getchar();
-      int esc= validarEscolhas(escolha);
-      if (esc==0){
-        if (escolha=='1'){
-          // ainda será organizado
-        }else if (escolha=='2'){
-          // ainda será organizado
-        }else{
-          valid=1;
+	void excluirFantasia(Fan* fanLido){
+		system("clear||cls");
+    FILE* fp;
+    Fan* fanArq;
+    int achou=0;
+    if(fanLido==NULL){
+      printf("A fantasia não existe\n");
+    }else{
+      fanArq=(Fan*) malloc(sizeof(Fan));
+      fp=fopen("fantasias.dat","r+b");
+      if (fp == NULL) {
+        printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+        printf("Não é possível continuar este programa...\n");
+        exit(1);
+      }
+      while(!feof(fp)){
+        fread(fanArq, sizeof(Fan), 1, fp);
+        if((fanArq->cod==fanLido->cod)&&(fanArq->status != 'x')){
+          fanArq->status='x';
+          fseek(fp,-1*sizeof(Fan),SEEK_CUR);
+          fwrite(fanArq,sizeof(Fan), 1, fp);
+          printf("\nFantasia Excluida com Sucesso\n");
+          sleep(2);
         }
       }
-    }while(valid==1);
-}
-
+      if(!achou){
+        printf("\n Fantasia não encontrada! \n");
+      }
+      fclose(fp);
+    }
+	}

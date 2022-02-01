@@ -12,9 +12,9 @@ struct cliente {
 void moduloCliente(void);
 char menuCliente(void);
 Cli* cadastrarCliente(void);
+void excluirCliente(Cli*);
 void exibeCliente(Cli*);
 void gravaClientes(Cli*);
 void listaCliente(void);
 void editarCliente(void);
 Cli* pesquisarCliente(void);
-void excluirCliente(void);

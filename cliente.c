@@ -16,15 +16,22 @@
 		do {
 			escolha = menuCliente();
 			switch(escolha) {
-				case '1': clit = cadastrarCliente();
+				case '1': 
+          clit = cadastrarCliente();
 					gravaClientes(clit);
-				  	break;
-				case '2':   listaCliente();
 				  break;
-        		case '3': clit = pesquisarCliente();
-          			exibeCliente(clit);
-          			break;
-				} 		
+				case '2':   
+          listaCliente();
+				  break;
+        case '3': 
+          clit = pesquisarCliente();
+          exibeCliente(clit);
+    			break;
+        case '4':
+          clit = pesquisarCliente();
+          excluirCliente(clit);
+          break; 	
+      }	
 		} while (escolha != '0');
 		free(clit);
 	}
@@ -55,6 +62,7 @@
 		printf("||                        |  1. Cadastrar Clientes           |                      ||\n");
 		printf("||                        |  2. Exibir Cliente               |                      ||\n");
 		printf("||                        |  3. Pesquisar Cliente            |                      ||\n");
+		printf("||                        |  4. Excluir Cliente            |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
 		printf("||                        |__________________________________|                      ||\n");
 		printf("||                                                                                  ||\n");
@@ -121,7 +129,7 @@
 		        if (escolha=='1'){
 		          editarCliente();         
 		        }else if (escolha=='2'){
-		          excluirCliente();
+		          //excluirCliente();
 		        }else if (escolha=='3'){
 		          menuCliente();
 		        }else{
@@ -196,21 +204,6 @@
 			printf("||           1-salvar   2-Voltar                                                    ||\n");
 			printf("||                                                                                  ||\n");
 			printf("||__________________________________________________________________________________||\n");
-	    // int valid;
-	    // do{
-	    //   scanf("%c", &escolha);
-	    //   getchar();
-	    //   int esc= validarEscolhas(escolha);
-	    //   if (esc==0){
-	    //     if (escolha=='1'){
-	    //       listaCliente();
-	    //     }else if (escolha=='2'){
-	    //       menuCliente();
-	    //     }else{
-	    //       valid=1;
-	    //     }
-	    //   }
-	    // }while(valid==1);
 	    return cli;
 	}
 
@@ -328,75 +321,46 @@
 	    printf("||           |________________________________________________________|             ||\n");
 	    printf("||                                                                                  ||\n");
 	    printf("||                                                                                  ||\n");
-	    printf("||           1-Excluir   2-Editar   3-Voltar                                        ||\n");
 	    printf("||                                                                                  ||\n");
 	    printf("||__________________________________________________________________________________||\n");
 	    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
 	    printf("||                                                                                  ||\n");
 	    printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	    printf("||__________________________________________________________________________________||\n");
-	    int valid;
-	    do{
-	    	scanf("%c", &escolha);
-		    getchar();
-		    int esc= validarEscolhas(escolha);
-		    if (esc==0){
-		      if (escolha=='1'){
-		        // ainda será organizado
-		      }else if (escolha == '2'){
-		        // ainda será organizado
-		      }else if (escolha=='3'){
-		        menuCliente();
-		      }else{
-		        valid=1;
-		      }
-		    }
-		}while(valid==1);
-	}
+  }
 
 
-	void excluirCliente(void){
-    	char escolha;
+	void excluirCliente(Cli* cliLido){
 		system("clear||cls");
-		printf("______________________________________________________________________________________\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-		printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
-		printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||==================================================================================||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                      =========================================                   ||\n");
-		printf("||                      ====            Clientes             ====                   ||\n");
-		printf("||                      =========================================                   ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||            ________________________________________________________              ||\n");
-		printf("||           |                                                        |             ||\n");
-		printf("||           |  Você realmente deseja excluir o cliente [nome]?       |             ||\n");
-		printf("||           |                                                        |             ||\n");
-		printf("||           |                                                        |             ||\n");
-		printf("||           |                                                        |             ||\n");
-		printf("||           |________________________________________________________|             ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||           1-Sim   2-Não                                                          ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-	    int valid;
-	    do{
-	      scanf("%c", &escolha);
-	      getchar();
-	      int esc= validarEscolhas(escolha);
-	      if (esc==0){
-	        if (escolha=='1'){
-	          //cadastroCli(); ainda será organizado
-	        }else if (escolha=='2'){
-	          menuCliente();
-	        }else{
-	          valid=1;
-	        }
-	      }
-	    }while(valid==1);
+    FILE* fp;
+    Cli* cliArq;
+    int achou=0;
+    if(cliLido==NULL){
+      printf("Cliente não existe\n");
+    }else{
+      cliArq=(Cli*) malloc(sizeof(Cli));
+      fp=fopen("clientes.dat","r+b");
+      if (fp == NULL) {
+        printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+        printf("Não é possível continuar este programa...\n");
+        exit(1);
+      }
+      while(!feof(fp)){
+        fread(cliArq, sizeof(Cli), 1, fp);
+        if((cliArq->cod==cliLido->cod)&&(cliArq->status != 'x')){
+          cliArq->status='x';
+          fseek(fp,-1*sizeof(Cli),SEEK_CUR);
+          fwrite(cliArq,sizeof(Cli), 1, fp);
+          printf("\nCliente Excluido com Sucesso\n");
+          sleep(3);
+        }
+      }
+      if(!achou){
+        printf("\n Cliente não encontrado! \n");
+      }
+      fclose(fp);
+    }
 	}
+
+
+
