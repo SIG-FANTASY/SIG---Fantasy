@@ -6,7 +6,8 @@ struct venda {
 	int dia;
 	int mes;
 	int ano;
-	char aluguel;
+	int aluguel;
+	float valor;
 	char status;
 };
 
