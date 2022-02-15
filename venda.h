@@ -19,6 +19,9 @@ Ven* cadastrarVenda(void);
 void exibeVenda(Ven*);
 void gravaVendas(Ven*);
 void listaVenda(void);
-void editarVenda(void);
 void excluirVenda(Ven*);
 Ven* pesquisarVendas(void);
+
+void atualizarVenda(void);
+Ven* telaAtualizarVenda(void);
+void regravarVenda(Ven*);

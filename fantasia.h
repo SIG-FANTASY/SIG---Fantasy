@@ -21,3 +21,7 @@ void listaFantasia(void);
 void editarFantasia(void);
 Fan* pesquisarFantasia(void);
 void excluirFantasia(Fan*);
+
+void atualizarFantasia(void);
+Fan* telaAtualizarFantasia(void);
+void regravarFantasia(Fan*);

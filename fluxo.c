@@ -109,27 +109,14 @@
     printf("||     |__________________________________________________________________|         ||\n");
     printf("||                                                                                  ||\n");
     printf("||                                                                                  ||\n");
-    printf("||   1- Voltar                                                                      ||\n");
     printf("||__________________________________________________________________________________||\n");
-    int valid;
-    do{
-      scanf("%c", &escolha);
-      getchar();
-      int esc= validarEscolhas(escolha);
-      if (esc==0){
-        if (escolha=='1'){
-          menuFluxo();
-        }else{
-          valid=1;
-        }
-      }
-    }while(valid==1);
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
   }
 
 
   Flu* cadastrarGasto(void)
   {
-    char escolha;
     float aux;
     Flu *flu;
     flu = (Flu*) malloc(sizeof(Flu));
@@ -186,29 +173,16 @@
     flu->status='o';
     printf("||           |________________________________________________________|             ||\n");
     printf("||                                                                                  ||\n");
-    printf("||           1-Salvar   2- Voltar                                                   ||\n");
     printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
     return flu;
   }
 
   void exibeFluxo(Flu* fl)
   {
-    char escolha;
     if ((fl == NULL) || (fl->status == 'x')) {
-      printf("\n= = = Cliente Inexistente = = =\n");
-      int valid;
-      do{
-        scanf("%c", &escolha);
-        getchar();
-        int esc= validarEscolhas(escolha);
-        if (esc==0){
-          if (escolha=='1'){
-            menuFluxo();
-          }else{
-            valid=1;
-          }
-        }
-      }while(valid==1);
+      printf("\n= = = Cliente Inexistente = = =\n");  
     } else {
       printf("||  Código: %d\n", fl->cod);
       printf("||  Motivo: %s\n", fl->motivo);
@@ -281,4 +255,6 @@
     printf("||                                                                                  ||\n");
     printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
     printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
   }

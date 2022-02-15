@@ -74,7 +74,7 @@ int validarLetras(char letra[], int tamanho){
   int cont=0;
 
   for(int x=0; letra[x] != '\0'; x++){
-    for( int y=0;alfabeto[y] != '\0';y++){
+    for( int y=0;y<=53;y++){
       if(letra[x] == alfabeto[y]){
         cont++;
       }
@@ -93,7 +93,7 @@ int validarNumeros(char digitos[],int tamanho){
    int cont=0;
 
   for(int x=0; digitos[x] != '\0'; x++){
-    for( int y=0; numeros[y] != '\0';y++){
+    for( int y=0; y<=11;y++){
       if(digitos[x] == numeros[y]){
         cont++;
       }
@@ -109,11 +109,11 @@ int validarNumeros(char digitos[],int tamanho){
 }
 
 int validarEscolhas(char esc){
-  char numeros[11]={'0','1','2','3','4','5','6','7','8','9'};
+  char numeros[8]={'0','1','2','3','4','5','6'};
 
   int escolha;
 
-  for(int x=0; x<11 ; x++){
+  for(int x=0; x<=7 ; x++){
     if(esc == numeros[x]){
         escolha=1;
         break;
@@ -132,7 +132,7 @@ int validarEmail(char email[], int tamanho){
   int cont=0;
 
   for(int i=tamanho; i>tamanho-5; i--){
-    for (int x=0; fim[x] != '\0'; x++){
+    for (int x=0; x<4; x++){
       if (email[i]==fim[x]){
         cont++;
       }

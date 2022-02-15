@@ -27,6 +27,9 @@
           exibeFantasia(fant);
           break;
         case '4':
+          atualizarFantasia();
+          break;
+         case '5':
           fant=pesquisarFantasia();
           excluirFantasia(fant);
           break;
@@ -60,7 +63,8 @@
     printf("||                        |  1. Cadastrar Fantasia           |                      ||\n");
     printf("||                        |  2. Exibir Fantasia              |                      ||\n");
     printf("||                        |  3. Pesquisar Fantasia           |                      ||\n");
-    printf("||                        |  4. Excluir Fantasia             |                      ||\n");
+    printf("||                        |  4. Atualizar Fantasia           |                      ||\n");
+    printf("||                        |  5. Excluir Fantasia             |                      ||\n");
     printf("||                        |  0. Voltar                       |                      ||\n");
     printf("||                        |__________________________________|                      ||\n");
     printf("||                                                                                  ||\n");
@@ -78,7 +82,6 @@
 
   void listaFantasia()
   {
-    char escolha;
     system("clear||cls");
     printf("______________________________________________________________________________________\n");
     printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -114,25 +117,12 @@
     printf("||                                                                                  ||\n");
     printf("||                                                                                  ||\n");
     printf("||__________________________________________________________________________________||\n");
-    printf("1-voltar");
-    int valid;
-    do{
-      scanf("%c", &escolha);
-      getchar();
-      int esc= validarEscolhas(escolha);
-      if (esc==0){
-        if (escolha=='1'){
-          menuFantasia();
-        }else{
-          valid=1;
-        }
-      }
-    }while(valid==1);
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
   }
 
   Fan* cadastrarFantasia(void)
   {
-    char escolha;
     float aux;
     Fan *fan;
     fan = (Fan*) malloc(sizeof(Fan));
@@ -198,6 +188,8 @@
     printf("||                                                                                  ||\n");
     printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
     printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
     return fan;
   }
 
@@ -242,57 +234,6 @@
     fclose(fp);
   }
 
-  void editarFantasia(void)
-  {
-    char escolha;
-    system("clear||cls");
-    printf("______________________________________________________________________________________\n");
-    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-    printf("||__________________________________________________________________________________||\n");
-    printf("||                                                                                  ||\n");
-    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-    printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
-    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-    printf("||                                                                                  ||\n");
-    printf("||==================================================================================||\n");
-    printf("||                                                                                  ||\n");
-    printf("||                                                                                  ||\n");
-    printf("||                      =========================================                   ||\n");
-    printf("||                      ====         Editar Fantasia         ====                   ||\n");
-    printf("||                      =========================================                   ||\n");
-    printf("||                                                                                  ||\n");
-    printf("||            ________________________________________________________              ||\n");
-    printf("||           |                                                        |             ||\n");
-    printf("||           |  Cód.Fantasia:[_______________]                        |             ||\n");
-    printf("||           |  Nome:[_______________________]                        |             ||\n");
-    printf("||           |  Tamanho: [opcao]                                      |             ||\n");
-    printf("||           |  Preco:[_______]                                       |             ||\n");
-    printf("||           |________________________________________________________|             ||\n");
-    printf("||                                                                                  ||\n");
-    printf("||           1-Salvar   2-Voltar                                                    ||\n");
-    printf("||                                                                                  ||\n");
-    printf("||__________________________________________________________________________________||\n");
-    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-    printf("||                                                                                  ||\n");
-    printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
-    printf("||__________________________________________________________________________________||\n");
-    int valid;
-    do{
-        scanf("%c", &escolha);
-        getchar();
-        int esc= validarEscolhas(escolha);
-        if (esc==0){
-          if (escolha=='1'){
-            // ainda será organizado
-          }else if (escolha=='2'){
-            menuFantasia();
-          }else{
-            valid=1;
-          }
-        }
-      }while(valid==1);
-  }
-
   Fan* pesquisarFantasia(void)
   {
     system("clear||cls");
@@ -318,6 +259,7 @@
     printf("\n = Buscar Fantasia = \n"); 
     printf("Informe o codigo: "); 
     scanf("%d", &codigo);
+    getchar();
     fantasia = (Fan*) malloc(sizeof(Fan));
     fp = fopen("fantasias.dat", "rb");
     if (fp == NULL) {
@@ -342,6 +284,8 @@
     printf("||                                                                                  ||\n");
     printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
     printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	    getchar();
   }
 
 
@@ -377,3 +321,105 @@
       fclose(fp);
     }
   }
+
+  void atualizarFantasia(void) {
+    Fan* fan;
+  int* cod;
+  char* quantidade;
+  char* nome;
+  float* preco;
+  char* tamanho;
+
+  quantidade = malloc(101 * sizeof(char));
+  nome = malloc(101 * sizeof(char));
+  tamanho = malloc(5 * sizeof(char));
+
+    fan = pesquisarFantasia();
+
+    if (fan == NULL) {
+        printf("Cliente não encontrado");// relativo a inexistencia do cliente;
+    } else {
+        fan = telaAtualizarFantasia();
+        nome = fan->nome;
+        quantidade = fan->quantidade;
+        preco = &fan->preco;
+        tamanho = fan->tamanho;
+        regravarFantasia(fan);
+        exibeFantasia(fan);
+    }
+}
+
+Fan* telaAtualizarFantasia(void) {
+    Fan *fan;
+    fan = (Fan*) malloc(sizeof(Fan));
+    system("clear||cls");
+    printf("______________________________________________________________________________________\n");
+    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("||__________________________________________________________________________________||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
+    printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
+    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||==================================================================================||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                      =========================================                   ||\n");
+    printf("||                      ====      Atualizar Fantasia         ====                   ||\n");
+    printf("||                      =========================================                   ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||            ________________________________________________________              ||\n");
+    printf("||           |                                                        |             ||\n");
+    printf("||           |  Nome:");
+    do{
+      scanf("%[A-Z a-z]", fan->nome);
+      printf("Nome: %s\n", fan->nome);
+      getchar();
+    }while(validarLetras(fan->nome,tamanhoString(fan->nome))==1);
+
+    printf("||           |  Quantidade:");
+    do{
+      scanf("%[A-Z a-z 0-9]", fan->quantidade);
+      printf("Quantidade: %s\n", fan->quantidade);
+      getchar();
+    }while(validarNumeros(fan->quantidade,tamanhoString(fan->quantidade))==1);
+
+    printf("||           |  Tamanho:");
+    do{
+      scanf("%[A-Z a-z]", fan->tamanho);
+      printf("Tamanho: %s\n", fan->tamanho);
+      getchar();
+    }while(validarLetras(fan->tamanho,tamanhoString(fan->tamanho))==1);
+
+    printf("||           |  Preco:(use ponto para separar o centavos Ex: 00.00)");
+    scanf("%f", &fan->preco);
+    printf("Preço: %f \n", fan->preco);
+    getchar();
+    printf("||           |________________________________________________________|             ||\n");
+    printf("||                                                                                  ||\n");       
+    printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
+    return fan;
+}
+
+void regravarFantasia(Fan* fan) {
+    FILE* fp;
+    Fan* fant;
+
+    fant = (Fan*) malloc(sizeof(Fan));
+    fp = fopen("fantasias.dat", "r+b");
+    if (fp == NULL) {
+        printf("Erro! O sistema não  conseguiu encontrar o arquivo\n!"); 
+        exit(1);
+    }
+    while(fread(fant, sizeof(Fan), 1, fp)) {
+        if (fant->cod==fan->cod) {
+            fseek(fp, -1*sizeof(Fan), SEEK_CUR);
+            fwrite(fan, sizeof(Fan), 1, fp);
+            fclose(fp);       
+        }
+    }
+    fclose(fp);
+    free(fant);
+}

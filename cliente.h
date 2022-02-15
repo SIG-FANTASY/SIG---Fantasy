@@ -9,6 +9,9 @@ struct cliente {
   char status;
 };
 
+void atualizarCliente(void);
+Cli* telaAtualizarCliente(void);
+void regravarCliente(Cli*);
 void moduloCliente(void);
 char menuCliente(void);
 Cli* cadastrarCliente(void);

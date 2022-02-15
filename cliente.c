@@ -28,11 +28,17 @@
           exibeCliente(clit);
     			break;
         case '4':
+          atualizarCliente();
+          break; 
+        case '5':
           clit = pesquisarCliente();
           excluirCliente(clit);
-          break; 	
+          break;	
+        case '0':
+          main();
+          break;
       }	
-		} while (escolha != '0');
+		} while (escolha <= '6' );
 		free(clit);
 	}
 
@@ -62,15 +68,16 @@
 		printf("||                        |  1. Cadastrar Clientes           |                      ||\n");
 		printf("||                        |  2. Exibir Cliente               |                      ||\n");
 		printf("||                        |  3. Pesquisar Cliente            |                      ||\n");
-		printf("||                        |  4. Excluir Cliente              |                      ||\n");
+    printf("||                        |  4. Atualizar Cliente            |                      ||\n");
+		printf("||                        |  5. Excluir Cliente              |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
 		printf("||                        |__________________________________|                      ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||__________________________________________________________________________________||\n");
-		printf("||	Digite a opcao desejada: ");
 		int valid;
 	  do{
+      printf("||	Digite a opcao desejada: ");
 	    scanf("%c", &escolha);
 	    getchar();
 	    valid= validarEscolhas(escolha);
@@ -80,7 +87,6 @@
 
 	void listaCliente(void)
 	{
-    char escolha;
 		system("clear||cls");
 		printf("______________________________________________________________________________________\n");
 		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -118,25 +124,12 @@
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||__________________________________________________________________________________||\n");
-	  printf("1- Voltar ");
-	  int valid;
-	  do{
-		  scanf("%c", &escolha);
-		  getchar();
-		  int esc= validarEscolhas(escolha);
-		  if (esc==0){
-		    if (escolha=='1'){
-		      menuCliente();
-		    }else{
-		      valid=1;
-		    }
-	    }
-		}while(valid==1);
+	  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
 	}
 
 	Cli* cadastrarCliente(void)
 	{
-    char escolha;
     float aux;
 		Cli *cli;
 		cli = (Cli*) malloc(sizeof(Cli));
@@ -201,7 +194,8 @@
 		printf("||                                                                                  ||\n");
 		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 		printf("||__________________________________________________________________________________||\n");
-		printf("1- Salvar ");
+		printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
 	  return cli;
 	}
 
@@ -247,57 +241,8 @@
 	  fclose(fp);
 	}
 
-
-	void editarCliente(void)
-	{
-    char escolha;
-		system("clear||cls");
-		printf("______________________________________________________________________________________\n");
-		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("||__________________________________________________________________________________||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-		printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
-		printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||==================================================================================||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||                      =========================================                   ||\n");
-		printf("||                      ====         Editar Clientes         ====                   ||\n");
-		printf("||                      =========================================                   ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||            ________________________________________________________              ||\n");
-		printf("||           |                                                        |             ||\n");
-		printf("||           |  Nome:[_______________________]                        |             ||\n");
-		printf("||           |  Idade:[_________________]                             |             ||\n");
-		printf("||           |  Email  : [     ]                                      |             ||\n");
-		printf("||           |  Telefone[     ]                                       |             ||\n");
-		printf("||           |________________________________________________________|             ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||           1-Salvar   2-Voltar                                                    ||\n");
-		printf("||                                                                                  ||\n");
-		printf("||__________________________________________________________________________________||\n");
-		int valid;
-	  do{
-	  	scanf("%c", &escolha);
-	    getchar();
-	    int esc= validarEscolhas(escolha);
-	    if (esc==0){
-	      if (escolha=='1'){
-	        cadastrarCliente();
-	      }else if (escolha=='2'){
-	        menuCliente();
-	      }else{
-	        valid=1;
-	      }
-	    }
-	  }while(valid==1);
-	}
-
 	Cli* pesquisarCliente(void) 
 	{
-		char escolha;
 		system("clear||cls");
 		printf("______________________________________________________________________________________\n");
 		printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -321,6 +266,7 @@
 	  printf("\n = Buscar Cliente = \n"); 
 	  printf("Informe o codigo: "); 
 	  scanf("%d", &codigo);
+    getchar();
 	  cliente = (Cli*) malloc(sizeof(Cli));
 	  fp = fopen("clientes.dat", "rb");
 	  if (fp == NULL) {
@@ -345,21 +291,11 @@
 	  printf("||                                                                                  ||\n");
 	  printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 	  printf("||__________________________________________________________________________________||\n");
-	  printf("1- Voltar");
-	  int valid;
-	  do{
-		  scanf("%c", &escolha);
-		  getchar();
-		  int esc= validarEscolhas(escolha);
-		  if (esc==0){
-		    if (escolha=='1'){
-		      menuCliente();
-		    }else{
-		      valid=1;
-		    }
-	    }
-		}while(valid==1);
+	  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
   }
+
+
 
 
 	void excluirCliente(Cli* cliLido)
@@ -395,5 +331,112 @@
     }
 	}
 
+void atualizarCliente(void) {
+    Cli* cli;
+  int* cod;
+  char *nome;
+  char* email;
+  char* idade;
+  char* telefone;
 
+  nome = malloc(101 * sizeof(char));
+  email = malloc(51 * sizeof(char));
+  idade = malloc(4 * sizeof(char));
+  telefone = malloc(14 * sizeof(char));
 
+    cli = pesquisarCliente();
+
+    if (cli == NULL) {
+        printf("Cliente não encontrado");// relativo a inexistencia do cliente;
+    } else {
+        cli = telaAtualizarCliente();
+        nome = cli->nome;
+        email = cli->email;
+        idade = cli->idade;
+        telefone = cli->telefone;
+        regravarCliente(cli);
+        exibeCliente(cli);
+    }
+}
+
+Cli* telaAtualizarCliente(void) {
+    Cli *cli;
+    cli = (Cli*) malloc(sizeof(Cli));
+
+    system("clear||cls");
+    printf("______________________________________________________________________________________\n");
+    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("||__________________________________________________________________________________||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
+    printf("||                      ::||           SIG-Fantasy           ||::                   ||\n");
+    printf("||                      :::::::::::::::::::::::::::::::::::::::::                   ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||==================================================================================||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                      =========================================                   ||\n");
+    printf("||                      ====      Atualizar Clientes         ====                   ||\n");
+    printf("||                      =========================================                   ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||            ________________________________________________________              ||\n");
+    printf("||           |                                                        |             ||\n");
+    printf("||           |  Nome (sem acento):");
+	  do{
+	    scanf("%[A-Z a-z 0-9]", cli->nome);
+	    printf("Nome: %s \n", cli->nome);
+			getchar();
+	  }while(validarLetras(cli->nome,tamanhoString(cli->nome))==1);
+        printf("||           |  Idade:");
+      do{
+        scanf("%[0-9]", cli->idade);
+        printf("Idade: %s \n", cli->idade);
+        getchar();
+      }while(validarNumeros(cli->idade,tamanhoString(cli->idade))==1);
+
+        printf("||           |  Email:");
+      do{
+        scanf("%[A-z a-z 0-9 @.-_]", cli->email);
+        printf("Email: %s \n", cli->email);
+        getchar();
+        }while(validarEmail(cli->email,tamanhoString(cli->email))==1);
+
+        printf("||           |  Telefone:(sem tracos e pontos)");
+      do{
+      scanf("%[0-9]", cli->telefone);
+      printf("Telefone: %s \n\n", cli->telefone);
+            getchar();
+      }while(validarNumeros(cli->telefone,tamanhoString(cli->telefone))==1);
+    cli->status='o';
+    printf("||           |________________________________________________________|             ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                                                                                  ||\n");
+    printf("||__________________________________________________________________________________||\n");
+    printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("||                                                                                  ||\n");
+    printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");       printf("||__________________________________________________________________________________||\n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
+    return cli;
+}
+
+void regravarCliente(Cli* cli) {
+    FILE* fp;
+    Cli* clit;
+
+    clit = (Cli*) malloc(sizeof(Cli));
+    fp = fopen("clientes.dat", "r+b");
+    if (fp == NULL) {
+        printf("Erro! O sistema não  conseguiu encontrar o arquivo\n!"); 
+        exit(1);
+    }
+    while(fread(clit, sizeof(Cli), 1, fp)) {
+        if (clit->cod==cli->cod) {
+            fseek(fp, -1*sizeof(Cli), SEEK_CUR);
+            fwrite(cli, sizeof(Cli), 1, fp);
+            fclose(fp);       
+        }
+    }
+    fclose(fp);
+    free(clit);
+}
