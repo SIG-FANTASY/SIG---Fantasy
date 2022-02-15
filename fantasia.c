@@ -346,6 +346,7 @@
         tamanho = fan->tamanho;
         regravarFantasia(fan);
         exibeFantasia(fan);
+      free(fan);
     }
 }
 

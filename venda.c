@@ -315,11 +315,11 @@
 	    Ven* ven;
 	    int* cod;
 	    char* cliente;
-		int* dia;
-		int* mes;
-		int* ano;
-		int* aluguel;
-		float* valor;
+  		int* dia;
+  		int* mes;
+  		int* ano;
+  		int* aluguel;
+  		float* valor;
 
 	  	cliente= malloc(15 * sizeof(char));
 
@@ -337,6 +337,7 @@
 	        valor = &ven->valor;
 	        regravarVenda(ven);
 	        exibeVenda(ven);
+        free(ven);
 	    }
 	}
 

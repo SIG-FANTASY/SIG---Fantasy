@@ -33,12 +33,9 @@
         case '5':
           clit = pesquisarCliente();
           excluirCliente(clit);
-          break;	
-        case '0':
-          main();
           break;
       }	
-		} while (escolha <= '6' );
+		} while (escolha != '0' );
 		free(clit);
 	}
 
@@ -333,16 +330,16 @@
 
 void atualizarCliente(void) {
     Cli* cli;
-  int* cod;
-  char *nome;
-  char* email;
-  char* idade;
-  char* telefone;
-
-  nome = malloc(101 * sizeof(char));
-  email = malloc(51 * sizeof(char));
-  idade = malloc(4 * sizeof(char));
-  telefone = malloc(14 * sizeof(char));
+    int* cod;
+    char *nome;
+    char* email;
+    char* idade;
+    char* telefone;
+  
+    nome = malloc(101 * sizeof(char));
+    email = malloc(51 * sizeof(char));
+    idade = malloc(4 * sizeof(char));
+    telefone = malloc(14 * sizeof(char));
 
     cli = pesquisarCliente();
 
@@ -356,6 +353,7 @@ void atualizarCliente(void) {
         telefone = cli->telefone;
         regravarCliente(cli);
         exibeCliente(cli);
+      free(cli);
     }
 }
 
