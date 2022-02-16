@@ -7,6 +7,7 @@ struct fantasia {
   float preco;
   char tamanho[5];
   char status;
+  struct fantasia *prox;
 };
 
 void moduloFantasia(void);
@@ -25,3 +26,7 @@ void excluirFantasia(Fan*);
 void atualizarFantasia(void);
 Fan* telaAtualizarFantasia(void);
 void regravarFantasia(Fan*);
+
+void relatorioFan(Fan **);
+void listaFan(Fan*);
+void glFan(Fan*);

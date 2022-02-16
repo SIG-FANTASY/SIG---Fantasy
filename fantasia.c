@@ -11,6 +11,8 @@
   void moduloFantasia(void)
   {
     Fan* fant;
+    Fan *lista;
+    lista = NULL;
     char escolha;
     do {
       escolha = menuFantasia();
@@ -29,9 +31,13 @@
         case '4':
           atualizarFantasia();
           break;
-         case '5':
+        case '5':
           fant=pesquisarFantasia();
           excluirFantasia(fant);
+          break;
+        case '6':
+          relatorioFan(&lista);
+          listaFan(lista);
           break;
       }     
     } while (escolha != '0');
@@ -65,6 +71,7 @@
     printf("||                        |  3. Pesquisar Fantasia           |                      ||\n");
     printf("||                        |  4. Atualizar Fantasia           |                      ||\n");
     printf("||                        |  5. Excluir Fantasia             |                      ||\n");
+    printf("||                        |  6. Relatorio de Fantasias       |                      ||\n");
     printf("||                        |  0. Voltar                       |                      ||\n");
     printf("||                        |__________________________________|                      ||\n");
     printf("||                                                                                  ||\n");
@@ -189,8 +196,9 @@
     printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
     printf("||__________________________________________________________________________________||\n");
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-	    getchar();
+    getchar();
     return fan;
+    glFan(fan);
   }
 
   void exibeFantasia(Fan* fn)
@@ -218,8 +226,9 @@
       printf("||  Quantidade: %s\n", fn->quantidade);
       printf("||  Tamanho: %s\n", fn->tamanho);
       printf("||  Preco: %f\n\n", fn->preco);
-      sleep(2);
     }
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    getchar();
   }
 
   void gravaFantasia(Fan* fan)
@@ -337,7 +346,7 @@
     fan = pesquisarFantasia();
 
     if (fan == NULL) {
-        printf("Cliente não encontrado");// relativo a inexistencia do cliente;
+        printf("Fanente não encontrado");// relativo a inexistencia do Fanente;
     } else {
         fan = telaAtualizarFantasia();
         nome = fan->nome;
@@ -423,4 +432,87 @@ void regravarFantasia(Fan* fan) {
     }
     fclose(fp);
     free(fant);
+}
+
+void relatorioFan(Fan **lista)
+{
+    FILE *fp;
+    Fan *fn;
+    
+    
+    *lista = NULL;
+    fp = fopen("fantasias.dat","rb");
+    if (fp == NULL)
+    {
+     printf("O programa não conseguiu abrir o arquivo! \n");
+     exit(1);
+    }
+    else
+    {
+     fn = (Fan *) malloc(sizeof(Fan));
+     while (fread(fn, sizeof(Fan), 1, fp))
+     {
+        if ((*lista == NULL) || (strcmp(fn->nome, (*lista)->nome) < 0)) {
+          fn->prox = *lista;
+          *lista = fn;
+        } else  {
+          Fan* ant = *lista;
+          Fan* atu = (*lista)->prox;
+          while ((atu != NULL) && (strcmp(atu->nome, fn->nome) < 0)) {
+            ant = atu;
+            atu = atu->prox;
+          }
+          ant->prox = fn;
+          fn->prox = atu;
+        }
+        fn = (Fan *) malloc(sizeof(Fan));
+     }
+     free(fn);
+     printf("Arquivo recuperado com sucesso! \n");
+     fclose(fp);
+    }    
+}
+
+void listaFan(Fan *aux)
+{
+  printf("\n\n");
+  printf("****************************************\n");
+  printf("*** Relatorio das Fantasias Cadastrados ***\n");
+  printf("****************************************\n");
+  printf("| Cod |\t| Nome |\t| Quantidade|\t| Tamanho|\t| Preço|\n");
+  printf("\n");
+  while (aux != NULL)
+  {
+      printf("%d\t\t\t",aux->cod);
+      printf("%s\t\t\t",aux->nome);
+      printf("%s\t\t\t",aux->quantidade);
+      printf("%s\t\t\t",aux->tamanho);
+      printf("%f\n",aux->preco);
+      aux = aux->prox;
+  }
+  printf("\nFim da Lista! \n\n");
+  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+  getchar();
+}
+
+void glFan(Fan *lista)
+{
+    FILE *fp;
+    
+    fp = fopen("Fanentes.dat","wb");
+    if (fp == NULL)
+    {
+     printf("Erro na abertura do arquivo... \n");
+     exit(1);
+    }
+    else
+    {
+     while (lista != NULL)
+     {
+       fwrite(lista, sizeof(Fan), 1, fp);
+       lista = lista->prox;
+     }
+     printf("Arquivo gravado com sucesso! \n");
+     fclose(fp);
+    }
 }
