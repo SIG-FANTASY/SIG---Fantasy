@@ -12,31 +12,36 @@
 	void moduloCliente(void)
 	{
 		Cli* clit;
+	    Cli *lista;
+	    lista = NULL;
 		char escolha;
 		do {
 			escolha = menuCliente();
 			switch(escolha) {
 				case '1': 
-          clit = cadastrarCliente();
+          			clit = cadastrarCliente();
 					gravaClientes(clit);
-				  break;
+				  	break;
 				case '2':   
-          listaCliente();
-				  break;
-        case '3': 
-          clit = pesquisarCliente();
-          exibeCliente(clit);
-    			break;
-        case '4':
-          atualizarCliente();
-          break; 
-        case '5':
-          clit = pesquisarCliente();
-          excluirCliente(clit);
-          break;
-      }	
+          			listaCliente();
+				  	break;
+        		case '3': 
+		          clit = pesquisarCliente();
+		          exibeCliente(clit);
+		          break;
+        		case '4':
+		          atualizarCliente();
+		          break; 
+        		case '5':
+		          clit = pesquisarCliente();
+		          excluirCliente(clit);
+		          break;
+        		case '6':
+		          relatorioCli(&lista);
+		          listaCli(lista);
+		          break;
+      		}	
 		} while (escolha != '0' );
-		free(clit);
 	}
 
 	/////////////////////////////////////////MENU CLIENTES//////////////////////////////////////////////////////////
@@ -65,20 +70,21 @@
 		printf("||                        |  1. Cadastrar Clientes           |                      ||\n");
 		printf("||                        |  2. Exibir Cliente               |                      ||\n");
 		printf("||                        |  3. Pesquisar Cliente            |                      ||\n");
-    printf("||                        |  4. Atualizar Cliente            |                      ||\n");
+    	printf("||                        |  4. Atualizar Cliente            |                      ||\n");
 		printf("||                        |  5. Excluir Cliente              |                      ||\n");
+		printf("||                        |  6. Relatório Cliente            |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
 		printf("||                        |__________________________________|                      ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||__________________________________________________________________________________||\n");
 		int valid;
-	  do{
-      printf("||	Digite a opcao desejada: ");
-	    scanf("%c", &escolha);
-	    getchar();
-	    valid= validarEscolhas(escolha);
-	  }while(valid==1);
+	  	do{
+      		printf("||	Digite a opcao desejada: ");
+	    	scanf("%c", &escolha);
+	    	getchar();
+	    	valid= validarEscolhas(escolha);
+	  	}while(valid==1);
 		return escolha;
 	}
 
@@ -101,14 +107,14 @@
 		printf("||                      =========================================                   ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||  _____________________________________                                           ||\n");
-    FILE *fp;
-	  Cli* cli;
-	  cli = (Cli*) malloc(sizeof(Cli));
-	  fp = fopen("clientes.dat", "rb");
-	  if (fp == NULL) {
-		  printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
-		  printf("Não é possível continuar este programa...\n");
-		  exit(1);
+    	FILE *fp;
+	  	Cli* cli;
+	  	cli = (Cli*) malloc(sizeof(Cli));
+	  	fp = fopen("clientes.dat", "rb");
+	  	if (fp == NULL) {
+			printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+		  	printf("Não é possível continuar este programa...\n");
+		  	exit(1);
 		}
 		while(fread(cli, sizeof(Cli), 1, fp)) {
 		  if (cli->status != 'x') {
@@ -121,8 +127,8 @@
 		printf("||                                                                                  ||\n");
 		printf("||                                                                                  ||\n");
 		printf("||__________________________________________________________________________________||\n");
-	  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-    getchar();
+	  	printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    	getchar();
 	}
 
 	Cli* cadastrarCliente(void)
@@ -192,38 +198,40 @@
 		printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
 		printf("||__________________________________________________________________________________||\n");
 		printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-    getchar();
-	  return cli;
+    	getchar();
+	  	return cli;
+	  	glCli(cli);
 	}
 
 	void exibeCliente(Cli* cl)
 	{
 		char escolha;
 		if ((cl == NULL) || (cl->status == 'x')) {
-    	printf("\n= = = Cliente Inexistente = = =\n");
-      printf("1- Voltar");
-      int valid;
-      do{
-        scanf("%c", &escolha);
-        getchar();
-        int esc= validarEscolhas(escolha);
-        if (esc==0){
-          if (escolha=='1'){
-            menuCliente();
-          }else{
-            valid=1;
-          }
-        }
-      }while(valid==1);
-  	} else {
-      printf("\n");
-      printf("||  Código: %d\n", cl->cod);
-  		printf("||  Nome: %s\n", cl->nome);
-  		printf("||  Idade: %s\n", cl->idade);
-  		printf("||  Email: %s\n", cl->email);
-  		printf("||  Telefone: %s\n\n", cl->telefone);
-      sleep(2);
-  	}
+    		printf("\n= = = Cliente Inexistente = = =\n");
+      		printf("1- Voltar");
+      		int valid;
+      		do{
+        		scanf("%c", &escolha);
+        		getchar();
+        		int esc= validarEscolhas(escolha);
+        		if (esc==0){
+          			if (escolha=='1'){
+            			menuCliente();
+          			}else{
+            			valid=1;
+          			}
+        		}
+      		}while(valid==1);
+  		} else {
+	      	printf("\n");
+	      	printf("||  Código: %d\n", cl->cod);
+	  		printf("||  Nome: %s\n", cl->nome);
+	  		printf("||  Idade: %s\n", cl->idade);
+	  		printf("||  Email: %s\n", cl->email);
+	  		printf("||  Telefone: %s\n\n", cl->telefone);
+  		}
+  		printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+    	getchar();
 	}
 
 	void gravaClientes(Cli* cli)
@@ -278,7 +286,7 @@
 	    }
 	  }
 	  fclose(fp);
-    return NULL;
+	  return NULL;
 	  printf("||           |________________________________________________________|             ||\n");
 	  printf("||                                                                                  ||\n");
 	  printf("||                                                                                  ||\n");
@@ -437,4 +445,87 @@ void regravarCliente(Cli* cli) {
     }
     fclose(fp);
     free(clit);
+}
+
+void relatorioCli(Cli **lista)
+{
+    FILE *fp;
+    Cli *cl;
+    
+    
+    *lista = NULL;
+    fp = fopen("clientes.dat","rb");
+    if (fp == NULL)
+    {
+   	 printf("O programa não conseguiu abrir o arquivo! \n");
+   	 exit(1);
+    }
+    else
+    {
+   	 cl = (Cli *) malloc(sizeof(Cli));
+   	 while (fread(cl, sizeof(Cli), 1, fp))
+   	 {
+        if ((*lista == NULL) || (strcmp(cl->nome, (*lista)->nome) < 0)) {
+          cl->prox = *lista;
+          *lista = cl;
+        } else  {
+          Cli* ant = *lista;
+          Cli* atu = (*lista)->prox;
+          while ((atu != NULL) && (strcmp(atu->nome, cl->nome) < 0)) {
+            ant = atu;
+            atu = atu->prox;
+          }
+          ant->prox = cl;
+          cl->prox = atu;
+        }
+        cl = (Cli *) malloc(sizeof(Cli));
+   	 }
+   	 free(cl);
+   	 printf("Arquivo recuperado com sucesso! \n");
+   	 fclose(fp);
+    }    
+}
+
+void listaCli(Cli *aux)
+{
+  printf("\n\n");
+  printf("****************************************\n");
+	printf("*** Relatorio dos Clientes Cadastrados ***\n");
+  printf("****************************************\n");
+	printf("| Cod |\t| Nome |\t| E-mail|\t| Idade|\t| Telefone|\n");
+  printf("\n");
+	while (aux != NULL)
+	{
+    	printf("%d\t\t\t",aux->cod);
+    	printf("%s\t\t\t",aux->nome);
+    	printf("%s\t\t\t",aux->email);
+    	printf("%s\t\t\t",aux->idade);
+    	printf("%s\n",aux->telefone);
+    	aux = aux->prox;
+	}
+	printf("\nFim da Lista! \n\n");
+	printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+	getchar();
+}
+
+void glCli(Cli *lista)
+{
+    FILE *fp;
+    
+    fp = fopen("clientes.dat","wb");
+    if (fp == NULL)
+    {
+   	 printf("Erro na abertura do arquivo... \n");
+   	 exit(1);
+    }
+    else
+    {
+   	 while (lista != NULL)
+   	 {
+   		 fwrite(lista, sizeof(Cli), 1, fp);
+   		 lista = lista->prox;
+   	 }
+   	 printf("Arquivo gravado com sucesso! \n");
+   	 fclose(fp);
+    }
 }

@@ -7,6 +7,7 @@ struct cliente {
   char idade[4];
   char telefone[14];
   char status;
+  struct cliente *prox;
 };
 
 void atualizarCliente(void);
@@ -21,3 +22,7 @@ void gravaClientes(Cli*);
 void listaCliente(void);
 void editarCliente(void);
 Cli* pesquisarCliente(void);
+
+void relatorioCli(Cli **);
+void listaCli(Cli*);
+void glCli(Cli*);
