@@ -9,6 +9,7 @@ struct fluxo{
   	float valor;
   	char responsavel[101];
   	char status;
+  	struct fluxo *prox;
 };
 
 void moduloFluxo(void);
@@ -21,3 +22,7 @@ void gravaGasto(Flu*);
 
 void listaFluxo();
 Flu* pesquisarFluxo(void);
+
+void relatorioFlu(Flu **);
+void listaFlu(Flu*);
+void glFlu(Flu*);
