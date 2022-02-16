@@ -9,6 +9,7 @@ struct venda {
 	int aluguel;
 	float valor;
 	char status;
+	struct venda *prox;
 };
 
 void moduloVenda(void);
@@ -25,3 +26,7 @@ Ven* pesquisarVendas(void);
 void atualizarVenda(void);
 Ven* telaAtualizarVenda(void);
 void regravarVenda(Ven*);
+
+void relatorioVen(Ven **);
+void listaVen(Ven*);
+void glVen(Ven*);

@@ -11,6 +11,9 @@
 	void moduloVenda(void)
 	{
 		Ven* vn;
+	    Ven *lista;
+	    lista = NULL;
+
 		char escolha;
 		do {
 			escolha = menuVenda();
@@ -33,6 +36,10 @@
 			        vn=pesquisarVendas();
 			        excluirVenda(vn);
 			        break;
+			    case '6':
+			    	relatorioVen(&lista);
+		          	listaVen(lista);
+		          	break;
 			} 		
 		} while (escolha != '0');  
 	}
@@ -63,6 +70,7 @@
 		printf("||                        |  3. Pesquisar Vendas             |                      ||\n");
 		printf("||                        |  4. Alterar Vendas               |                      ||\n");
 	    printf("||                        |  5. Excluir Vendas               |                      ||\n");
+		printf("||                        |  6. Relatorio de Vendas          |                      ||\n");
 		printf("||                        |  0. Voltar                       |                      ||\n");
 		printf("||                        |__________________________________|                      ||\n");
 		printf("||                                                                                  ||\n");
@@ -186,6 +194,7 @@
 		printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
     	getchar();
 	 	return ven;
+	 	glVen(ven);
 	}
 
 	void exibeVenda(Ven* ven) {
@@ -418,4 +427,87 @@
 	    }
 	    fclose(fp);
 	    free(vend);
+	}
+
+	void relatorioVen(Ven **lista)
+	{
+	    FILE *fp;
+	    Ven *vn;
+	    
+	    
+	    *lista = NULL;
+	    fp = fopen("venda.dat","rb");
+	    if (fp == NULL)
+	    {
+	   	 printf("O programa não conseguiu abrir o arquivo! \n");
+	   	 exit(1);
+	    }
+	    else
+	    {
+	   	 vn = (Ven *) malloc(sizeof(Ven));
+	   	 while (fread(vn, sizeof(Ven), 1, fp))
+	   	 {
+	        if ((*lista == NULL) || (strcmp(vn->cliente, (*lista)->cliente) < 0)) {
+	          vn->prox = *lista;
+	          *lista = vn;
+	        } else  {
+	          Ven* ant = *lista;
+	          Ven* atu = (*lista)->prox;
+	          while ((atu != NULL) && (strcmp(atu->cliente, vn->cliente) < 0)) {
+	            ant = atu;
+	            atu = atu->prox;
+	          }
+	          ant->prox = vn;
+	          vn->prox = atu;
+	        }
+	        vn = (Ven *) malloc(sizeof(Ven));
+	   	 }
+	   	 free(vn);
+	   	 printf("Arquivo recuperado com sucesso! \n");
+	   	 fclose(fp);
+	    }    
+	}
+
+	void listaVen(Ven *aux)
+	{
+	  printf("\n\n");
+	  printf("****************************************\n");
+		printf("*** Relatorio dos Venentes Cadastrados ***\n");
+	  printf("****************************************\n");
+		printf("| Cod |\t| Cliente |\t| Data|\t| Aluguel|\t| Valor|\n");
+	  printf("\n");
+		while (aux != NULL)
+		{
+	    	printf("%d\t\t\t",aux->cod);
+	    	printf("%s\t\t\t",aux->cliente);
+	    	printf("%d/%d/%d\t\t\t",aux->dia,aux->mes,aux->ano);
+	    	printf("%d\t\t\t",aux->aluguel);
+	    	printf("%f\n",aux->valor);
+	    	aux = aux->prox;
+		}
+		printf("\nFim da Lista! \n\n");
+		printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+		getchar();
+	}
+
+	void glVen(Ven *lista)
+	{
+	    FILE *fp;
+	    
+	    fp = fopen("venda.dat","wb");
+	    if (fp == NULL)
+	    {
+	   	 printf("Erro na abertura do arquivo... \n");
+	   	 exit(1);
+	    }
+	    else
+	    {
+	   	 while (lista != NULL)
+	   	 {
+	   		 fwrite(lista, sizeof(Ven), 1, fp);
+	   		 lista = lista->prox;
+	   	 }
+	   	 printf("Arquivo gravado com sucesso! \n");
+	   	 fclose(fp);
+	    }
 	}
