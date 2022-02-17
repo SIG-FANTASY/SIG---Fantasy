@@ -15,6 +15,8 @@ struct fluxo{
 void moduloFluxo(void);
 char menuFluxo(void);
 
+void telaExibirFluxo(Flu*);
+
 Flu* cadastrarGasto(void);
 
 void exibeFluxo(Flu*);

@@ -20,12 +20,13 @@ void gravaFantasia(Fan*);
 
 void listaFantasia(void);
 void editarFantasia(void);
+
 Fan* pesquisarFantasia(void);
+void telaExibirFantasia(Fan*);
+
 void excluirFantasia(Fan*);
 
-void atualizarFantasia(void);
-Fan* telaAtualizarFantasia(void);
-void regravarFantasia(Fan*);
+Fan* alterarFantasia(Fan*);
 
 void relatorioFan(Fan **);
 void listaFan(Fan*);

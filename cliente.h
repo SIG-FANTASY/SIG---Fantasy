@@ -10,18 +10,21 @@ struct cliente {
   struct cliente *prox;
 };
 
-void atualizarCliente(void);
-Cli* telaAtualizarCliente(void);
-void regravarCliente(Cli*);
+Cli* alterarCliente(Cli*);
+
 void moduloCliente(void);
 char menuCliente(void);
-Cli* cadastrarCliente(void);
+
 void excluirCliente(Cli*);
-void exibeCliente(Cli*);
+
+Cli* cadastrarCliente(void);
 void gravaClientes(Cli*);
+
 void listaCliente(void);
-void editarCliente(void);
+
 Cli* pesquisarCliente(void);
+void exibeCliente(Cli*);
+void telaExibirCliente(Cli*);
 
 void relatorioCli(Cli **);
 void listaCli(Cli*);
