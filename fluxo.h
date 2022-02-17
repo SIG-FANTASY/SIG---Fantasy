@@ -4,12 +4,12 @@ struct fluxo{
 	int cod;
 	char motivo[51];
 	int dia;
-  	int mes;
-  	int ano;
-  	float valor;
-  	char responsavel[101];
-  	char status;
-  	struct fluxo *prox;
+	int mes;
+	int ano;
+	float valor;
+	char responsavel[101];
+	char status;
+	struct fluxo *prox;
 };
 
 void moduloFluxo(void);
@@ -23,8 +23,7 @@ void exibeFluxo(Flu*);
 void gravaGasto(Flu*);
 
 void listaFluxo();
-Flu* pesquisarFluxo(void);
+Flu* pesquisarFluxo(void); // inspirado por @flgorgonio
 
-void relatorioFlu(Flu **);
-void listaFlu(Flu*);
-void glFlu(Flu*);
+void relatorioFlu(Flu **); // inspirado por @flgorgonio
+void listaFlu(Flu*); // inspirado por @flgorgonio

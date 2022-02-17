@@ -3,7 +3,7 @@ typedef struct venda Ven; //STRUCT INSPIRADO POR @flgorgonio
 struct venda {
 	int cod;
 	char cliente[15];
-  char produto[15];
+	char produto[15];
 	int dia;
 	int mes;
 	int ano;
@@ -25,8 +25,7 @@ void telaExibirVenda(Ven*);
 void gravaVendas(Ven*);
 void listaVenda(void);
 void excluirVenda(Ven*);
-Ven* pesquisarVendas(void);
+Ven* pesquisarVendas(void); // inspirado por @flgorgonio
 
-void relatorioVen(Ven **);
-void listaVen(Ven*);
-void glVen(Ven*);
+void relatorioVen(Ven **); // inspirado por @flgorgonio
+void listaVen(Ven*); // inspirado por @flgorgonio

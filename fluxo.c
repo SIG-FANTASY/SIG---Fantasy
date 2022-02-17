@@ -6,38 +6,38 @@
 #include "fluxo.h"
 #include "validar.h"
 
-  typedef struct fluxo Flu; //STRUCT INSPIRADO POR @flgorgonio
+typedef struct fluxo Flu; //STRUCT INSPIRADO POR @flgorgonio
 
-  void moduloFluxo(void)
-  {
+void moduloFluxo(void)
+{
     Flu* flux;
     Flu *lista;
     lista = NULL;
     char escolha;
     do {
-      escolha = menuFluxo();
-      switch(escolha) {
-        case '1':   flux=cadastrarGasto();
-          gravaGasto(flux);
-          break;
-        case '2': listaFluxo();
-          break;
-        case '3': flux=pesquisarFluxo();
-          telaExibirFluxo(flux);
-          break;
-        case '4':
-          relatorioFlu(&lista);
-          listaFlu(lista);
-          break;
-      }     
+        escolha = menuFluxo();
+        switch(escolha) {
+            case '1':   flux=cadastrarGasto();
+                gravaGasto(flux);
+                break;
+            case '2': listaFluxo();
+                break;
+            case '3': flux=pesquisarFluxo();
+                telaExibirFluxo(flux);
+                break;
+            case '4':
+                relatorioFlu(&lista);
+                listaFlu(lista);
+                break;
+        }     
     } while (escolha != '0'); 
     free(flux);
-  }
+}
 
   //////////////////////////////////////////////MENU FLUXO///////////////////////////////////////////////////
 
-  char menuFluxo(void)
-  {
+char menuFluxo(void)
+{
     char escolha;
     system("clear||cls");
     printf("______________________________________________________________________________________\n");
@@ -69,15 +69,15 @@
     printf("'Digite a opção desejada:'");
     int valid;
     do{
-      scanf("%c", &escolha);
-      getchar();
-      valid= validarEscolhas(escolha);
+        scanf("%c", &escolha);
+        getchar();
+        valid= validarEscolhas(escolha);
     }while(valid==1);
     return escolha;
-  }
+}
 
-  void listaFluxo()
-  {
+void listaFluxo()
+{
     system("clear||cls");
     printf("______________________________________________________________________________________\n");
     printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -100,14 +100,14 @@
     flu = (Flu*) malloc(sizeof(Flu));
     fp = fopen("fluxo.dat", "rb");
     if (fp == NULL) {
-      printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
-      printf("Não é possível continuar este programa...\n");
-      exit(1);
+        printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+        printf("Não é possível continuar este programa...\n");
+        exit(1);
     }
     while(fread(flu, sizeof(Flu), 1, fp)) {
-      if (flu->status != 'x') {
-        exibeFluxo(flu);
-      }
+        if (flu->status != 'x') {
+            exibeFluxo(flu);
+        }
     }
     fclose(fp);    
     printf("||     |                                                                  |         ||\n");
@@ -117,12 +117,12 @@
     printf("||                                                                                  ||\n");
     printf("||__________________________________________________________________________________||\n");
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-	    getchar();
-  }
+    getchar();
+}
 
 
-  Flu* cadastrarGasto(void)
-  {
+Flu* cadastrarGasto(void)
+{
     float aux;
     Flu *flu;
     flu = (Flu*) malloc(sizeof(Flu));
@@ -146,24 +146,24 @@
     printf("||           |                                                        |             ||\n");
     printf("||           |  Código (apenas números):");
     while(aux != flu->cod || flu->cod == 0){
-      scanf("%f", &aux);
-      getchar();
-      flu->cod = aux;
+        scanf("%f", &aux);
+        getchar();
+        flu->cod = aux;
     }
     printf("Código: %d\n", flu->cod);
 
     printf("||           |  Motivo:");
     do{
-      scanf("%[A-Z a-z 0-9]", flu->motivo);
-      printf("Motivo: %s\n", flu->motivo);
-      getchar();
+        scanf("%[A-Z a-z 0-9]", flu->motivo);
+        printf("Motivo: %s\n", flu->motivo);
+        getchar();
     }while(validarLetras(flu->motivo,tamanhoString(flu->motivo))==1);
 
     printf("||           |  Data (DD MM AA):");
     do{
-      scanf("%d %d %d", &flu->dia, &flu->mes, &flu->ano);
-      printf("Data: %d/%d/%d\n", flu->dia, flu->mes, flu->ano);
-      getchar();
+        scanf("%d %d %d", &flu->dia, &flu->mes, &flu->ano);
+        printf("Data: %d/%d/%d\n", flu->dia, flu->mes, flu->ano);
+        getchar();
     }while(validarData(flu->dia, flu->mes, flu->ano)==1);
 
     printf("||           |  Valor:");
@@ -172,9 +172,9 @@
     getchar();
     printf("||           |  Responsável:");
     do{
-      scanf("%[A-Z a-z 0-9]", flu->responsavel);
-      printf("Responsável: %s\n", flu->responsavel);
-      getchar();
+        scanf("%[A-Z a-z 0-9]", flu->responsavel);
+        printf("Responsável: %s\n", flu->responsavel);
+        getchar();
     }while(validarLetras(flu->responsavel,tamanhoString(flu->responsavel))==1);
     flu->status='o';
     printf("||           |________________________________________________________|             ||\n");
@@ -183,26 +183,25 @@
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
     getchar();
     return flu;
-    glFlu(flu);
-  }
+}
 
-  void exibeFluxo(Flu* fl)
-  {
+void exibeFluxo(Flu* fl)
+{
     if ((fl == NULL) || (fl->status == 'x')) {
-      printf("\n= = = Gasto Inexistente = = =\n");  
+        printf("\n= = = Gasto Inexistente = = =\n");  
     } else {
-      printf("||  Código: %d\n", fl->cod);
-      printf("||  Motivo: %s\n", fl->motivo);
-      printf("||  Data: %d/%d/%d\n", fl->dia, fl->mes, fl->ano);
-      printf("||  Valor: %f\n", fl->valor);
-      printf("||  Responsável: %s\n\n\n", fl->responsavel);
+        printf("||  Código: %d\n", fl->cod);
+        printf("||  Motivo: %s\n", fl->motivo);
+        printf("||  Data: %d/%d/%d\n", fl->dia, fl->mes, fl->ano);
+        printf("||  Valor: %f\n", fl->valor);
+        printf("||  Responsável: %s\n\n\n", fl->responsavel);
     }
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
     getchar();
-  }
+}
 
-  void gravaGasto(Flu* flu)
-  {
+void gravaGasto(Flu* flu)
+{
     FILE *fp;
 
     fp = fopen("fluxo.dat","ab");
@@ -211,11 +210,11 @@
     fp = fopen("fluxo.dat","ab");
     fwrite(flu, sizeof(Flu), 1, fp);
     fclose(fp);
-  }
+}
 
 
-  Flu* pesquisarFluxo(void)
-  {
+Flu* pesquisarFluxo(void)
+{ // inspirado por @flgorgonio
     system("clear||cls");
     printf("______________________________________________________________________________________\n");
     printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -242,15 +241,15 @@
     fluxo = (Flu*) malloc(sizeof(Flu));
     fp = fopen("fluxo.dat", "rb");
     if (fp == NULL) {
-      printf("O programa não conseguiu encontrar o arquivo!\n");
-      exit(1);
-    }
+        printf("O programa não conseguiu encontrar o arquivo!\n");
+        exit(1);
+    } 
     while(!feof(fp)) {
-      fread(fluxo, sizeof(Flu), 1, fp);
-      if ((fluxo->cod == codigo) && (fluxo->status != 'x')) {
-        fclose(fp);
-          return fluxo;
-      }
+        fread(fluxo, sizeof(Flu), 1, fp);
+        if ((fluxo->cod == codigo) && (fluxo->status != 'x')) {
+            fclose(fp);
+            return fluxo;
+        }
     }
     fclose(fp);
     return NULL;
@@ -264,10 +263,10 @@
     printf("||                         by José Pereira & Ketlly Azevedo                         ||\n");
     printf("||__________________________________________________________________________________||\n");
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-	    getchar();
-  }
+    getchar();
+}
 
-  void telaExibirFluxo(Flu * flu){
+void telaExibirFluxo(Flu * flu){
     system("clear||cls");
     printf("______________________________________________________________________________________\n");
     printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
@@ -301,47 +300,47 @@
     getchar();
 }
 
-  void relatorioFlu(Flu **lista)
-  {
-      FILE *fp;
-      Flu *fl;
-      
-      
-      *lista = NULL;
-      fp = fopen("fluxo.dat","rb");
-      if (fp == NULL)
-      {
+void relatorioFlu(Flu **lista)
+{ // inspirado por @flgorgonio
+    FILE *fp;
+    Flu *fl;
+
+
+    *lista = NULL;
+    fp = fopen("fluxo.dat","rb");
+    if (fp == NULL)
+    {
        printf("O programa não conseguiu abrir o arquivo! \n");
        exit(1);
-      }
-      else
-      {
-       fl = (Flu *) malloc(sizeof(Flu));
-       while (fread(fl, sizeof(Flu), 1, fp))
-       {
-          if ((*lista == NULL) || (strcmp(fl->responsavel, (*lista)->responsavel) < 0)) {
-            fl->prox = *lista;
-            *lista = fl;
-          } else  {
-            Flu* ant = *lista;
-            Flu* atu = (*lista)->prox;
-            while ((atu != NULL) && (strcmp(atu->responsavel, fl->responsavel) < 0)) {
-              ant = atu;
-              atu = atu->prox;
+    }
+    else
+    {
+        fl = (Flu *) malloc(sizeof(Flu));
+        while (fread(fl, sizeof(Flu), 1, fp))
+        {
+            if ((*lista == NULL) || (strcmp(fl->responsavel, (*lista)->responsavel) < 0)) {
+                fl->prox = *lista;
+                *lista = fl;
+            } else  {
+                Flu* ant = *lista;
+                Flu* atu = (*lista)->prox;
+                while ((atu != NULL) && (strcmp(atu->responsavel, fl->responsavel) < 0)) {
+                    ant = atu;
+                    atu = atu->prox;
+                }
+                ant->prox = fl;
+                fl->prox = atu;
             }
-            ant->prox = fl;
-            fl->prox = atu;
-          }
-          fl = (Flu *) malloc(sizeof(Flu));
-       }
-       free(fl);
-       printf("Arquivo recuperado com sucesso! \n");
-       fclose(fp);
-      }    
-  }
+            fl = (Flu *) malloc(sizeof(Flu));
+        }
+        free(fl);
+        printf("Arquivo recuperado com sucesso! \n");
+        fclose(fp);
+    }    
+}
 
-  void listaFlu(Flu *aux)
-  {
+void listaFlu(Flu *aux)
+{ // inspirado por @flgorgonio
     printf("\n\n");
     printf("****************************************\n");
     printf("*** Relatorio dos Gastos Cadastrados ***\n");
@@ -360,26 +359,4 @@
     printf("\nFim da Lista! \n\n");
     printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
     getchar();
-  }
-
-  void glFlu(Flu *lista)
-  {
-      FILE *fp;
-      
-      fp = fopen("fluxo.dat","wb");
-      if (fp == NULL)
-      {
-       printf("Erro na abertura do arquivo... \n");
-       exit(1);
-      }
-      else
-      {
-       while (lista != NULL)
-       {
-         fwrite(lista, sizeof(Flu), 1, fp);
-         lista = lista->prox;
-       }
-       printf("Arquivo gravado com sucesso! \n");
-       fclose(fp);
-      }
-  }
+}
